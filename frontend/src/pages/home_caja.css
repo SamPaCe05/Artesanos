@@ -11,3 +11,11 @@
     grid-template-rows: 1fr 1fr;
     place-items: center;
 }
+.boton{
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.boton:hover{
+    transform: scale(0.9); /* se retrae */
+}

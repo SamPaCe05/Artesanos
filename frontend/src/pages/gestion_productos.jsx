@@ -7,8 +7,8 @@ const GestionProductos = () => {
     return (
         <>
             <section className='gestion_sec'>
-                <Boton imagen={nuevo} nombre="Crear producto"/>
-                <Boton imagen={lupa} nombre="Buscar producto"/>
+                <Boton imagen={nuevo} className={"boton"} nombre="Crear producto"/>
+                <Boton imagen={lupa} className={"boton"} nombre="Buscar producto"/>
             </section>
         </>
     )

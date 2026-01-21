@@ -2,7 +2,7 @@
     display: grid;
     justify-items: center;
     padding: 50px;
-    height:350px;
+    height:auto;
     width:500px ;
     margin: 0 auto;
     border:solid gainsboro 1px;
