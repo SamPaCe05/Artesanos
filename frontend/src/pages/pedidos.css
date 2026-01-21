@@ -1,0 +1,22 @@
+.pedidos_section{
+    width: 600px;
+    height: 500px;
+    background-color: #F3F2F2;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.scroll_pedidos{
+    height: 280px;
+    overflow: auto;
+    margin-bottom: 40px;
+    border-radius: 10px;
+     scrollbar-width: none;
+}
+
+
+h2{
+    margin-top: 60px;
+}
