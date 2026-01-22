@@ -7,8 +7,15 @@ import lombok.Setter;
 @Setter
 
 public class ProductoDto {
-    Integer id;
     String nombreProducto;
     Integer cantidadProducto;
-    Integer precioProducto;
+    Integer subtotalPedido;
+    Integer precioMomento;
+
+    public ProductoDto(String nombre, Integer cantidad, Integer precio, Integer subtotal) {
+        this.nombreProducto = nombre;
+        this.cantidadProducto = cantidad;
+        this.precioMomento = precio;
+        this.subtotalPedido = subtotal;
+    }
 }

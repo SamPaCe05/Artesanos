@@ -11,6 +11,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,5 +39,11 @@ public class Pedido {
     @Column(name = "estado")
     EstadoPedido estadoPedido;
 
-    public Pedido(){}
+    @ManyToOne
+    @JoinColumn(name = "fk_id_usuario")
+    Usuario usuario;
+
+
+    public Pedido() {
+    }
 }

@@ -8,15 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class PedidoDto {
-    Integer id;
+public class PedidoBodyDto {
     Integer numeroMesa;
-    Integer total;
     List<ProductoDto> productos;
 
-    public PedidoDto(Integer id, Integer total, Integer numeroMesa) {
-        this.id = id;
-        this.total = total;
+    public PedidoBodyDto(Integer numeroMesa, List<ProductoDto> productoDtos) {
         this.numeroMesa = numeroMesa;
+        this.productos = productoDtos;
     }
 }

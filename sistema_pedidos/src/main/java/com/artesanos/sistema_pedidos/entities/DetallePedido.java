@@ -5,11 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "producto_pedido")
-public class ProductoPedido {
+public class DetallePedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pk_productoxpedido")
@@ -21,6 +23,13 @@ public class ProductoPedido {
     @Column(name = "cantidad")
     Integer cantidadProducto;
 
-    public ProductoPedido() {
+    @ManyToOne
+    @JoinColumn(name = "fk_n_pedido")
+    Pedido pedido;
+    @ManyToOne
+    @JoinColumn(name = "fk_id_producto")
+    Producto producto;
+
+    public DetallePedido() {
     }
 }

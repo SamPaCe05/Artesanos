@@ -10,15 +10,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.artesanos.sistema_pedidos.repositories.UserRepository;
+import com.artesanos.sistema_pedidos.repositories.UsuarioRepository;
 
 @Configuration
 
 public class AppConfig {
 
-    private final UserRepository userRepository;
+    private final UsuarioRepository userRepository;
 
-    public AppConfig(UserRepository userRepository) {
+    public AppConfig(UsuarioRepository userRepository) {
         this.userRepository = userRepository;
     }
 
