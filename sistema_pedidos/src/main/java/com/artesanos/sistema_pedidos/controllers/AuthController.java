@@ -7,17 +7,19 @@ import com.artesanos.sistema_pedidos.auth.AuthResponse;
 import com.artesanos.sistema_pedidos.auth.AuthService;
 import com.artesanos.sistema_pedidos.dtos.LoginRequestDto;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping(path = "/auth")
-@RequiredArgsConstructor
 public class AuthController {
+
     private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequestDto request) {

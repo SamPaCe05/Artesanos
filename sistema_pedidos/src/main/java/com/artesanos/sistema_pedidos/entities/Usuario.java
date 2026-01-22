@@ -44,7 +44,6 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Como ya mencionaste antes, esto devuelve el rol
         return List.of(new SimpleGrantedAuthority(rol.getNombreRol()));
     }
 
@@ -77,10 +76,5 @@ public class Usuario implements UserDetails {
     public String getUsername() {
         return this.nombre;
     }
-
-    // @Override
-    // public Collection<? extends GrantedAuthority> getAuthorities() {
-    // return List.of(new SimpleGrantedAuthority((rol.getNombreRol())));
-    // }
 
 }

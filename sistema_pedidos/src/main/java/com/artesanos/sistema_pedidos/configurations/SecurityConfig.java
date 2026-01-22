@@ -22,10 +22,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/api/admin/**").permitAll()
-                .requestMatchers("/api/waitress/**").permitAll()
+        return httpSecurity.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/api/caja/**").hasRole("CAJA")
+                .requestMatchers("/api/mesera/**").hasRole("MESERA")
                 .anyRequest().authenticated())
+
                 .sessionManagement(
                         sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)

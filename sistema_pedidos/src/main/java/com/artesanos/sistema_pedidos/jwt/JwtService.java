@@ -32,12 +32,12 @@ public class JwtService {
                 .map(GrantedAuthority::getAuthority)
                 .findFirst()
                 .orElse(null);
-                extraClaims.put("role", role);
+        extraClaims.put("role", role);
         return Jwts.builder()
                 .claims(extraClaims)
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getKey(), SignatureAlgorithm.HS256).compact();
     }
 
