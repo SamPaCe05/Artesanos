@@ -1,9 +1,12 @@
 package com.artesanos.sistema_pedidos.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.artesanos.sistema_pedidos.enums.EstadoPedido;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,8 +46,60 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "fk_id_usuario")
     Usuario usuario;
-
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<DetallePedido> detallesPedido;
 
     public Pedido() {
+        this.detallesPedido = new ArrayList<>();
     }
+
+    public void addDetalle(DetallePedido detalle) {
+        detallesPedido.add(detalle);
+        detalle.setPedido(this);
+        
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((fechaPedido == null) ? 0 : fechaPedido.hashCode());
+        result = prime * result + ((totalPedido == null) ? 0 : totalPedido.hashCode());
+        result = prime * result + ((numeroMesa == null) ? 0 : numeroMesa.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Pedido other = (Pedido) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (fechaPedido == null) {
+            if (other.fechaPedido != null)
+                return false;
+        } else if (!fechaPedido.equals(other.fechaPedido))
+            return false;
+        if (totalPedido == null) {
+            if (other.totalPedido != null)
+                return false;
+        } else if (!totalPedido.equals(other.totalPedido))
+            return false;
+        if (numeroMesa == null) {
+            if (other.numeroMesa != null)
+                return false;
+        } else if (!numeroMesa.equals(other.numeroMesa))
+            return false;
+        return true;
+    }
+
 }

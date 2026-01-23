@@ -13,13 +13,17 @@ import org.springframework.stereotype.Repository;
 public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
     @Query("""
+            select p from Pedido p where p.numeroMesa =?1 and p.estadoPedido ='PENDIENTE'
+                """)
+    List<Pedido> findPedidoPendienteByMesa(Integer numeroMesa);
+    @Query("""
                 select new com.artesanos.sistema_pedidos.dtos.PedidoDto(
                     p.id,
-                    p.totalPedido,
                     p.numeroMesa
                 )
                 from Pedido p
                 where p.estadoPedido = 'PENDIENTE'
             """)
     List<PedidoDto> findAllPedidos();
+
 }
