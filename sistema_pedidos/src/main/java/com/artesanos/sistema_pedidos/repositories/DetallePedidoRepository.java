@@ -18,5 +18,5 @@ public interface DetallePedidoRepository extends JpaRepository<DetallePedido, In
             from DetallePedido dt
             where dt.pedido.id=?1
         """)
-    List<ProductoDto> findProductosDePedido(Integer id);
+    public List<ProductoDto> findProductosDePedido(Integer id);
 }

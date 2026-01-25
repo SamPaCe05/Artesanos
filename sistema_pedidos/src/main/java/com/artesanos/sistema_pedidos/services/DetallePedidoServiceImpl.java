@@ -3,6 +3,7 @@ package com.artesanos.sistema_pedidos.services;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.artesanos.sistema_pedidos.dtos.ProductoDto;
 import com.artesanos.sistema_pedidos.repositories.DetallePedidoRepository;
@@ -16,6 +17,7 @@ public class DetallePedidoServiceImpl implements DetallePedidoService {
         this.detallePedidoRepository = detallePedidoRepository;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProductoDto> getDetallesPedido(Integer id) {
         return detallePedidoRepository.findProductosDePedido(id);

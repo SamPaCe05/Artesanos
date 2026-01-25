@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.artesanos.sistema_pedidos.dtos.PedidoBodyDto;
 import com.artesanos.sistema_pedidos.dtos.PedidoDto;
 import com.artesanos.sistema_pedidos.dtos.ProductoDto;
 import com.artesanos.sistema_pedidos.entities.DetallePedido;
@@ -18,6 +19,8 @@ import com.artesanos.sistema_pedidos.enums.EstadoPedido;
 import com.artesanos.sistema_pedidos.repositories.PedidoRepository;
 import com.artesanos.sistema_pedidos.repositories.ProductoRepository;
 import com.artesanos.sistema_pedidos.repositories.UsuarioRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
@@ -80,6 +83,57 @@ public class PedidoServiceImpl implements PedidoService {
 
         return Optional.of(pedidoRepository.save(pedido));
 
+    }
+
+    @Transactional
+    @SuppressWarnings("null")
+    @Override
+    public Optional<Pedido> actualizarEstadoPedido(Integer id, String estado) {
+        return pedidoRepository.findById(id).map(pedido -> {
+            pedido.setEstadoPedido(EstadoPedido.fromString(estado));
+            return pedidoRepository.save(pedido);
+        });
+    }
+
+    @Transactional
+    @SuppressWarnings("null")
+    @Override
+    public Optional<Pedido> actualizarPedido(Integer id, PedidoBodyDto pedidoBodyDto) {
+        return pedidoRepository.findById(id).map(pedido -> {
+
+            if (pedidoBodyDto.getNumeroMesa() != null) {
+                pedido.setNumeroMesa(pedidoBodyDto.getNumeroMesa());
+            }
+
+            if (pedidoBodyDto.getProductos() == null) {
+                return pedidoRepository.save(pedido);
+            }
+
+            pedido.getDetallesPedido().clear();
+            int totalAcumulado = 0;
+
+            for (ProductoDto i : pedidoBodyDto.getProductos()) {
+                DetallePedido detallePedido = new DetallePedido();
+
+                Producto prod = productoRepository.findByNombreProducto(i.getNombreProducto())
+                        .orElseThrow(
+                                () -> new EntityNotFoundException("Producto no encontrado: " + i.getNombreProducto()));
+
+                int subtotal = i.getCantidadProducto() * prod.getPrecio();
+
+                detallePedido.setPedido(pedido);
+                detallePedido.setProducto(prod);
+                detallePedido.setCantidadProducto(i.getCantidadProducto());
+                detallePedido.setPrecioMomento(prod.getPrecio());
+                detallePedido.setSubtotalPedido(subtotal);
+
+                totalAcumulado += subtotal;
+                pedido.getDetallesPedido().add(detallePedido);
+            }
+
+            pedido.setTotalPedido(totalAcumulado);
+            return pedidoRepository.save(pedido);
+        });
     }
 
 }

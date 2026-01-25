@@ -8,5 +8,5 @@ import com.artesanos.sistema_pedidos.entities.Producto;
 
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
-    Optional<Producto> findByNombreProducto(String nombreProducto);
+    public Optional<Producto> findByNombreProducto(String nombreProducto);
 }

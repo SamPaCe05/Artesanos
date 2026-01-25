@@ -63,10 +63,28 @@ public class PedidoController {
         return ResponseEntity.ok().build();
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Intentar actualizar pedido con id no existente"),
+            @ApiResponse(responseCode = "200", description = "Pedido actualizado")
+    })
+    @Operation(summary = "Actualizar pedidos por id")
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<?> putPedido(@PathVariable String id, @RequestBody PedidoBodyDto pedidoDto) {
-
+    public ResponseEntity<?> putPedido(@PathVariable Integer id, @RequestBody PedidoBodyDto pedidoDto) {
+        if (pedidoService.actualizarPedido(id, pedidoDto).isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe pedido con ese id");
+        }
         return ResponseEntity.ok().build();
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Intentar actualizar pedido con id no existente"),
+            @ApiResponse(responseCode = "200", description = "Estado de pedido actualizado")
+    })
+    @Operation(summary = "Actualizar estado de pedido por id")
+    @PutMapping("/actualizar/{id}/{estado}")
+    public ResponseEntity<?> putEstadoPedido(@PathVariable Integer id, @PathVariable String estado) {
+        return pedidoService.actualizarEstadoPedido(id, estado.toUpperCase()).map(p -> ResponseEntity.ok().body(p))
+                .orElseGet(() ->  ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+
+    }
 }
