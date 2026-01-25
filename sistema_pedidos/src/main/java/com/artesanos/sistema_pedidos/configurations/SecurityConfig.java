@@ -24,10 +24,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/api/caja/**").hasRole("CAJA")
                 .requestMatchers("/api/mesera/**").hasRole("MESERA")
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated())
 
                 .sessionManagement(

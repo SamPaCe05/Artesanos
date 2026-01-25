@@ -12,6 +12,6 @@ public class FacturaDto {
     Integer id;
     Integer total;
     LocalDate fechaFactura;
-    List<ProductoDto> productos;
+    List<ProductoDetalleDto> productos;
 
 }

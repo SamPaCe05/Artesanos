@@ -1,21 +1,18 @@
 package com.artesanos.sistema_pedidos.dtos;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
-
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductoDto {
     String nombreProducto;
-    Integer cantidadProducto;
-    Integer subtotalPedido;
-    Integer precioMomento;
-
-    public ProductoDto(String nombre, Integer cantidad, Integer precio, Integer subtotal) {
-        this.nombreProducto = nombre;
-        this.cantidadProducto = cantidad;
-        this.precioMomento = precio;
-        this.subtotalPedido = subtotal;
-    }
+    Integer precioProducto;
+    boolean combinable;
+    boolean activo; 
 }

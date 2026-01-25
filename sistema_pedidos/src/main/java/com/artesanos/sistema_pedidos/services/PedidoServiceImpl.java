@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.artesanos.sistema_pedidos.dtos.PedidoBodyDto;
 import com.artesanos.sistema_pedidos.dtos.PedidoDto;
-import com.artesanos.sistema_pedidos.dtos.ProductoDto;
+import com.artesanos.sistema_pedidos.dtos.ProductoDetalleDto;
 import com.artesanos.sistema_pedidos.entities.DetallePedido;
 import com.artesanos.sistema_pedidos.entities.Pedido;
 import com.artesanos.sistema_pedidos.entities.Producto;
@@ -54,7 +54,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         Integer total = 0;
 
-        for (ProductoDto i : pedidoDto.getProductos()) {
+        for (ProductoDetalleDto i : pedidoDto.getProductos()) {
 
             DetallePedido detallePedido = new DetallePedido();
             Producto prodOptional = productoRepository.findByNombreProducto(i.getNombreProducto()).orElseThrow();
@@ -112,7 +112,7 @@ public class PedidoServiceImpl implements PedidoService {
             pedido.getDetallesPedido().clear();
             int totalAcumulado = 0;
 
-            for (ProductoDto i : pedidoBodyDto.getProductos()) {
+            for (ProductoDetalleDto i : pedidoBodyDto.getProductos()) {
                 DetallePedido detallePedido = new DetallePedido();
 
                 Producto prod = productoRepository.findByNombreProducto(i.getNombreProducto())

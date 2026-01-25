@@ -11,14 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PedidoBodyDto {
     Integer numeroMesa;
-    List<ProductoDto> productos;
+    List<ProductoDetalleDto> productos;
 
-    public PedidoBodyDto(Integer numeroMesa, List<ProductoDto> productoDtos) {
+    public PedidoBodyDto(Integer numeroMesa, List<ProductoDetalleDto> productoDtos) {
         this.numeroMesa = numeroMesa;
         this.productos = productoDtos;
     }
 
-    public PedidoBodyDto(List<ProductoDto> productoDtos) {
+    public PedidoBodyDto(List<ProductoDetalleDto> productoDtos) {
         this.productos = productoDtos;
     }
 

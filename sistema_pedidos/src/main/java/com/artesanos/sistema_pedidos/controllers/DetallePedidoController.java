@@ -2,7 +2,7 @@ package com.artesanos.sistema_pedidos.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.artesanos.sistema_pedidos.dtos.ProductoDto;
+import com.artesanos.sistema_pedidos.dtos.ProductoDetalleDto;
 import com.artesanos.sistema_pedidos.services.DetallePedidoService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +35,7 @@ public class DetallePedidoController {
     @Operation(summary = "Obtener detalle de un pedido por id del pedido")
     @GetMapping("/{id}")
     public ResponseEntity<?> getDetallesPedido(@PathVariable Integer id) {
-        List<ProductoDto> productoDtos = detallePedidoService.getDetallesPedido(id);
+        List<ProductoDetalleDto> productoDtos = detallePedidoService.getDetallesPedido(id);
         if (productoDtos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay pedido con ese Id");
         }

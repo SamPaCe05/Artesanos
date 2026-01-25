@@ -27,6 +27,9 @@ public class Producto {
     @Column(name = "combinable")
     boolean combinable;
 
+    @Column(name = "activo")
+    boolean activo;
+
     public Producto() {
     }
 

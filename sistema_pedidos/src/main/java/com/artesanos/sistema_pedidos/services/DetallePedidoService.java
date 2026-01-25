@@ -2,8 +2,8 @@ package com.artesanos.sistema_pedidos.services;
 
 import java.util.List;
 
-import com.artesanos.sistema_pedidos.dtos.ProductoDto;
+import com.artesanos.sistema_pedidos.dtos.ProductoDetalleDto;
 
 public interface DetallePedidoService {
-    public List<ProductoDto> getDetallesPedido(Integer id);
+    public List<ProductoDetalleDto> getDetallesPedido(Integer id);
 }

@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import com.artesanos.sistema_pedidos.dtos.ProductoDto;
+import com.artesanos.sistema_pedidos.dtos.ProductoDetalleDto;
 import com.artesanos.sistema_pedidos.entities.DetallePedido;
-
+@Repository
 public interface DetallePedidoRepository extends JpaRepository<DetallePedido, Integer> {
     @Query("""
-            select new com.artesanos.sistema_pedidos.dtos.ProductoDto(
+            select new com.artesanos.sistema_pedidos.dtos.ProductoDetalleDto(
             dt.producto.nombreProducto,
             dt.cantidadProducto,
             dt.precioMomento, 
@@ -18,5 +19,5 @@ public interface DetallePedidoRepository extends JpaRepository<DetallePedido, In
             from DetallePedido dt
             where dt.pedido.id=?1
         """)
-    public List<ProductoDto> findProductosDePedido(Integer id);
+    public List<ProductoDetalleDto> findProductosDePedido(Integer id);
 }

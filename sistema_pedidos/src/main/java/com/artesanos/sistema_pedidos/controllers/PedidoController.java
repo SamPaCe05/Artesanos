@@ -67,7 +67,7 @@ public class PedidoController {
             @ApiResponse(responseCode = "404", description = "Intentar actualizar pedido con id no existente"),
             @ApiResponse(responseCode = "200", description = "Pedido actualizado")
     })
-    @Operation(summary = "Actualizar pedidos por id")
+    @Operation(summary = "Actualizar pedido por id")
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<?> putPedido(@PathVariable Integer id, @RequestBody PedidoBodyDto pedidoDto) {
         if (pedidoService.actualizarPedido(id, pedidoDto).isEmpty()) {

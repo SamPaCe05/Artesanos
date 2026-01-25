@@ -17,7 +17,7 @@ public class PedidoDto {
     Integer id;
     Integer numeroMesa;
     Integer total;
-    List<ProductoDto> productos;
+    List<ProductoDetalleDto> productos;
 
     public PedidoDto(Integer id, Integer total, Integer numeroMesa) {
         this.id = id;
