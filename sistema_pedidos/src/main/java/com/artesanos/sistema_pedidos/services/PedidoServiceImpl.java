@@ -59,7 +59,7 @@ public class PedidoServiceImpl implements PedidoService {
             DetallePedido detallePedido = new DetallePedido();
             Producto prodOptional = productoRepository.findByNombreProducto(i.getNombreProducto()).orElseThrow();
 
-            int subtotal = i.getCantidadProducto() * i.getPrecioMomento();
+            int subtotal = i.getCantidadProducto() * prodOptional.getPrecio();
 
             detallePedido.setProducto(prodOptional);
             detallePedido.setCantidadProducto(i.getCantidadProducto());
