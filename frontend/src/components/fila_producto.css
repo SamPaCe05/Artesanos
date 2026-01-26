@@ -1,0 +1,28 @@
+.fila-producto-sec{
+    display: grid;
+    grid-template-columns: 1fr 3fr 3fr 2fr;
+    width: 600px;
+    border: solid gainsboro 1px;
+    height: 30px;
+    border-radius: 20px;
+    background-color: white;
+    
+}
+
+.fila-producto-sec div{
+    width: 100%;
+    border: solid gainsboro 1px;
+    display: grid;
+    place-items: center;
+}
+
+.uno{
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px ;
+}
+
+.cuatro{
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+  
+}

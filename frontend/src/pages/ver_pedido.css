@@ -1,0 +1,114 @@
+.fila-pedido-sec{
+    width: 600px;
+    height: 500px;
+    display: grid;
+    grid-template-rows: 1fr 2fr 1fr;
+    background-color: #F3F0F0;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    padding: 10px;
+}
+
+.fila-pedido-div-uno{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: none;
+    align-self: start;
+    grid-row: 1;
+    height: 70px;
+    margin-top: 10px;
+    place-items: center;
+}
+
+.fila-pedido-text-pedido{
+    grid-column: 2;
+    border: none;
+}
+
+.fila-pedido-text-mesa{
+    grid-column: 3;
+    border: none;
+}
+
+.fila-pedido-div-dos{
+    align-self: start;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    border: none;
+    height: 340px;
+    grid-row: 2;
+    place-items: center;
+}
+
+.fila-pedido-index{
+    
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    border: none;
+    height: 50px;
+    justify-items: center;
+    width: 100%;
+}
+
+.fila-pedido-total{
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    border: none;
+    align-self: start;
+    margin-top: 10px;
+    place-items: center;
+    width: 100%;
+}
+
+.fila-pedido-total div{
+    border: none;
+}
+
+.fila-pedido-total h3{
+    grid-column: 3;
+}
+
+.fila-pedido-div-tres{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: none;
+    height: 100px;
+}
+
+.filas_ver{
+    display: grid;
+    width: 100%;
+    border: none;
+    max-height: 170px;
+    padding: 10px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    gap: 30px;
+    
+    
+}
+
+.fila-pedido-div-tres div{
+    display: grid;
+    place-items: center;
+    border: 0;
+}
+
+.fila-pedido-div-tres button{
+    height: 35px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    color: #ffffff;
+    font-weight: 600;
+    width: 75%;
+    margin-bottom: 20px;
+}
+
+.fila-boton-uno{
+    background-color: red;
+}
+
+.fila-boton-dos{
+    background-color: green;
+}

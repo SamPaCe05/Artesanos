@@ -16,7 +16,7 @@ const Login = () => {
                     <input type="password" name="" placeholder='Ingrese su contraseña' className='passw'/>
 
                 </div>
-                <div>
+                <div className='contain-iniciar'>
                     <button className='iniciar'>Iniciar</button>
                 </div>
 

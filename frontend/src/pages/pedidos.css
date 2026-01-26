@@ -5,7 +5,7 @@
     border-radius: 10px;
     display: grid;
     place-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
 }
 
 .scroll_pedidos{

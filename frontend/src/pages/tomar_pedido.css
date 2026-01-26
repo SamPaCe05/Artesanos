@@ -1,0 +1,40 @@
+.tomar-pedido-sec{
+    display: grid;
+    grid-template-rows: auto auto auto 1fr ;
+    width: 100%;
+    padding: 20px;
+    height: 100%;
+}
+
+.tomar-pedido-div-uno{
+    grid-row: 1;
+}
+.tomar-pedido-div-dos{
+    grid-row: 2;
+}
+.tomar-pedido-div-tres{
+    grid-row: 3;
+}
+.tomar-pedido-div-cuatro{
+    grid-row: 4;
+}
+.tomar-pedido-div-cinco{
+    position: fixed;
+    padding-bottom:64px;
+    left: 0;
+    bottom:0;
+    
+}
+
+.tomar-pedido-boton-volver{
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    border: none;
+    display: grid;
+    place-items: center;
+}
+
+.tomar-pedido-boton-volver img{
+    margin: 0;
+}
