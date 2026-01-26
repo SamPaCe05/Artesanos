@@ -15,6 +15,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     List<Producto> findByActivoTrue();
 
-    public List<Producto> findByNombreProductoContaining(String nombreProducto);
+    public List<Producto> findByNombreProductoContainingIgnoreCaseAndActivoTrue(String nombreProducto);
 
 }

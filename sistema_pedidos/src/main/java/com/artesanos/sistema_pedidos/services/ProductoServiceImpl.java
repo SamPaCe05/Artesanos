@@ -89,7 +89,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public List<Producto> buscarPorNombreIncompleto(String nombreProducto) {
-        return productoRepository.findByNombreProductoContaining(nombreProducto.toLowerCase());
+        return productoRepository.findByNombreProductoContainingIgnoreCaseAndActivoTrue(nombreProducto.toLowerCase());
     }
 
 }
