@@ -3,7 +3,6 @@ package com.artesanos.sistema_pedidos.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.artesanos.sistema_pedidos.dtos.ProductoDetalleDto;
-import com.artesanos.sistema_pedidos.entities.Producto;
 import com.artesanos.sistema_pedidos.services.DetallePedidoService;
 
 import io.swagger.v3.oas.annotations.Operation;

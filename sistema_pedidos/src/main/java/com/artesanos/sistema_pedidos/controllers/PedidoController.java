@@ -92,7 +92,7 @@ public class PedidoController {
     @PutMapping("/actualizar/{id}/{estado}")
     @PreAuthorize("hasAnyRole('CAJA','MESERA')")
     public ResponseEntity<?> putEstadoPedido(@PathVariable Integer id, @PathVariable String estado) {
-        return pedidoService.actualizarEstadoPedido(id, estado.toUpperCase()).map(p -> ResponseEntity.ok().body(p))
+        return pedidoService.actualizarEstadoPedido(id, estado.toUpperCase()).map(p -> ResponseEntity.ok().build())
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 
     }
