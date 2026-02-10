@@ -1,14 +1,18 @@
 import './ver_pedido.css'
 import FilaPedido from '../components/fila_pedido'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { apiRequest } from '../services/api';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useReactToPrint } from "react-to-print";
+import Comanda from './comanda';
 
 const VerPedido = ({ n_pedido, n_mesa }) => {
     const [pedido, setPedido] = useState([])
     const [cantidad, setCantidad] = useState(0)
-    const { id, mesa} = useParams();
-    const [total,setTotal]=useState(0)
+    const { id, mesa, estado } = useParams();
+    const [total, setTotal] = useState(0)
+    const comandaRef = useRef();
+    const navigate=useNavigate();
 
     const pedidoPorId = async () => {
         return apiRequest(`/api/detallePedido/${id}`, {
@@ -16,14 +20,26 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
         })
     }
 
-    const confirmarPedido=async()=>{
-        return apiRequest(`/api/pedidos/actualizar/${id}/RESUELTO`,{
-            metodo:"PUT"
+    const confirmarPedido = async () => {
+        return apiRequest(`/api/pedidos/actualizar/${id}/RESUELTO`, {
+            metodo: "PUT"
         })
     }
 
-    const resolverPedido=async()=>{
-        const tmp=await confirmarPedido()
+    const anularPedido = async () => {
+        return apiRequest(`/api/pedidos/actualizar/${id}/CANCELADO`, {
+            metodo: "PUT"
+        })
+    }
+
+    const cancelarPedido=async()=>{
+        const tmp=await anularPedido();
+        navigate("/pedidos");
+    }
+
+    const resolverPedido = async () => {
+        const tmp = await confirmarPedido()
+        navigate("/pedidos");   
     }
     useEffect(() => {
         const traerPedido = async () => {
@@ -31,15 +47,17 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
             setCantidad(tmp.length)
             setPedido(tmp)
             console.log(tmp)
-            const suma=tmp.reduce((cnt,p)=>{
-                return cnt+p.subtotalPedido
-            },0)
+            const suma = tmp.reduce((cnt, p) => {
+                return cnt + p.subtotalPedido
+            }, 0)
             setTotal(suma)
         }
         traerPedido()
     }, [])
 
-    
+    const imprimir=useReactToPrint({
+        contentRef:comandaRef
+    });
 
 
 
@@ -62,11 +80,13 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                         <h3>Total</h3>
                     </div>
                     <div className='filas_ver'>
-                        
+
                         {
-                            pedido.map((p,index)=>(
-                                <FilaPedido key={index} nombre={p.nombreProducto} cantidad={p.cantidadProducto} precio={p.precioMomento} subtotal={p.subtotalPedido}/>
+                            pedido.map((p, index) => (
+                                <FilaPedido key={index} nombre={p.nombreProducto} cantidad={p.cantidadProducto} precio={p.precioMomento} subtotal={p.subtotalPedido} />
                             ))
+                       
+                            
                         }
 
                     </div>
@@ -76,14 +96,36 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                     </div>
                 </div>
                 <div className='fila-pedido-div-tres'>
-                    <div>
-                        <button className='fila-boton-uno'>Anular Pedido</button>
-                    </div>
-                    <div>
-                        <button className='fila-boton-dos' onClick={resolverPedido}>Confirmar Pago</button>
-                    </div>
+                    {estado != undefined ? (
+                        <>
+                            
+
+                            <div>
+                                <button className='fila-boton-dos' onClick={imprimir}>Imprimir Comanda</button>
+                            </div>
+                        </>
+
+                    ) : (
+                        <>
+                            <div>
+                                <button className='fila-boton-uno' onClick={cancelarPedido}>Anular Pedido</button>
+                            </div>
+                            <div>
+                                <button className='fila-boton-dos' onClick={resolverPedido}>Confirmar Pago</button>
+                            </div>
+                            <div>
+                                <button className='fila-boton-dos' onClick={imprimir}>Imprimir Comanda</button>
+                            </div>
+                        </>
+                    )
+
+                    }
+
                 </div>
             </section>
+            <div className='comanda'>
+                    <Comanda ref={comandaRef} pedido={pedido}/>
+            </div>
         </>
     )
 }

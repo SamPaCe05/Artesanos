@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { apiRequest } from '../services/api'
 import './crear_producto.css'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const CrearProducto = () => {
     const { id, nombre, precio } = useParams()
-
+    const navigate=useNavigate();
 
 
     const enviarProducto = async (cuerpo) => {
@@ -26,11 +26,12 @@ const CrearProducto = () => {
         e.preventDefault();
         const nombreProducto = e.target.nombrePizza.value;
         const precioProducto = e.target.precioPizza.value;
+        const combinable = e.target.estado.value;
 
         const cuerpo = {
             nombreProducto: nombreProducto,
             precioProducto: precioProducto,
-            combinable: true,
+            combinable: combinable,
             activo: true
         };
 
@@ -39,7 +40,7 @@ const CrearProducto = () => {
         } else {
             const enviar = await enviarProducto(cuerpo);
         }
-
+        navigate("/gestion-productos");
 
     }
 
@@ -49,9 +50,9 @@ const CrearProducto = () => {
         <>
             <section className='crear-producto-sec'>
                 <form onSubmit={capturarDatos} className='form-crear-producto'>
-                    <div>Nuevo Producto</div>
+                    <div><h1 className='titulo-nuevo-producto'>Nuevo Producto</h1></div>
                     <div className='crear-producto-inputs'>
-                        <label htmlFor="">Nombre del producto</label>
+                        <label htmlFor="" className='labels-nuevo-producto'>Nombre del producto</label>
                         {id != undefined ? (
                             <input type="text" className='inputs' name='nombrePizza' defaultValue={nombre} />
                         ) : (
@@ -61,7 +62,7 @@ const CrearProducto = () => {
                         }
                     </div>
                     <div className='crear-producto-inputs'>
-                        <label htmlFor="">Precio del producto</label>
+                        <label htmlFor="" className='labels-nuevo-producto'>Precio del producto</label>
                         {id != undefined ? (
                             <input type="text" className='inputs' name='precioPizza' defaultValue={precio} />
                         ) : (
@@ -71,7 +72,13 @@ const CrearProducto = () => {
                         }
 
                     </div>
-                    <button>Guardar</button>
+                    <div>
+                        <select name="estado" id="" className='estado'>
+                            <option value="true">Combinable</option>
+                            <option value="false">Completa</option>
+                        </select>
+                    </div>
+                    <button className='boton-guardar-crear-producto'>Guardar</button>
                 </form>
 
             </section>

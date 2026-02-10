@@ -112,3 +112,14 @@
 .fila-boton-dos{
     background-color: green;
 }
+
+
+.comanda{
+    display: none;
+}
+
+@media print{
+    .comanda{
+        display: block;
+    }
+}

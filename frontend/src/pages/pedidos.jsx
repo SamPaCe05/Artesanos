@@ -4,7 +4,7 @@ import { apiRequest } from '../services/api'
 import { useEffect, useState } from 'react'
 
 const Pedidos = () => {
-    const [cantidad, setCantidad] = useState(0)
+
     const [pedido, setPedido] = useState([])
 
     const listarPedidos = () => {
@@ -17,12 +17,19 @@ const Pedidos = () => {
     useEffect(() => {
 
         const cargar = async () => {
+
             const res = await listarPedidos()
             setPedido(res)
-            setCantidad(res.length)
-            console.log(res)
         }
         cargar()
+
+
+        const intervalo = setInterval(async () => {
+            const tmp = await listarPedidos()
+            setPedido(tmp)
+            console.log(tmp)
+        }, 10000);
+        return ()=>clearInterval(intervalo);
     }
         , [])
 
@@ -35,14 +42,18 @@ const Pedidos = () => {
             <section className='pedidos_section'>
                 <h2>Pedidos</h2>
                 <div className='scroll_pedidos'>
-                    {
-                        
+                    {pedido!=null?(
                         pedido.map(p => (
-                            
+
                             <BotonPedido key={p.id} ruta={`/ver-pedido/${p.id}/${p.numeroMesa}`} num_mesa={p.numeroMesa} num_pedido={p.id} />
 
 
                         ))
+                    ):(
+                        <p>No hay pedidos en curso</p>
+                    )
+
+                        
                     }
 
 

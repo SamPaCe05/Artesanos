@@ -12,6 +12,7 @@ import PedidoMesera from './pages/pedidos_mesera';
 import TomarPedido from './pages/tomar_pedido';
 import GestionProductos from './pages/gestion_productos';
 import CrearProducto from './pages/crear_producto';
+import VerVentas from './pages/ver_ventas';
 
 function App() {
 
@@ -29,6 +30,9 @@ function App() {
       <Route path="/tomar-pedido/:id/:mesa" element={<TomarPedido />} />
       <Route path="/crear-producto" element={<CrearProducto />} />
       <Route path="/editar-producto/:id/:nombre/:precio" element={<CrearProducto />} />
+      <Route path="/ver-ventas" element={<VerVentas />} />
+      <Route path="/ver-pedido/:id/:mesa/:estado" element={<VerPedido />} />
+
 
 
 

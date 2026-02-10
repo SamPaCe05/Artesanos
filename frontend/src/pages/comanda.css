@@ -1,0 +1,11 @@
+@media print {
+  .div-comanda {
+    width: 80mm;
+    margin: 0 auto;
+  }
+}
+@media print {
+  @page {
+    margin: 0;
+  }
+}

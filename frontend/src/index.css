@@ -3,20 +3,23 @@
   line-height: 1.5;
   font-weight: 400;
 }
-#root{
+
+#root {
   height: 100%;
   display: grid;
-  place-items:center;
+  place-items: center;
 }
 
-body{
+body {
   height: 100%;
   width: 100%;
+
 }
 
-html{
+
+
+html {
   margin: 0;
   height: 100%;
   width: 100%;
 }
-

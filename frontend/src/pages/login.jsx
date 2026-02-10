@@ -21,6 +21,7 @@ const Login = () => {
             const res=await autenticar(body)
             localStorage.setItem("token",res.token)
             localStorage.setItem("rol",res.rol)
+            
             if (res.rol==="ROLE_CAJA") {
                 navigate("/caja")
                 console.log(res.rol)

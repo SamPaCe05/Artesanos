@@ -5,6 +5,7 @@
     justify-items: center;
     gap: 3px;
     text-align: center;
+    font-weight: 500;
 }
 
 .fila-tomar-pedido-div-dos, .fila-tomar-pedido-div-tres, .fila-tomar-pedido-div-cuatro{

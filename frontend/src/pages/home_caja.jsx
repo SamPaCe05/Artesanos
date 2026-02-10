@@ -9,7 +9,7 @@ const HomeCaja = () => {
     
     return (
         <section className='caja'>
-            <Boton imagen={alcancia} className="boton" nombre="Buscar ventas" ruta="/"/>   
+            <Boton imagen={alcancia} className="boton" nombre="Buscar ventas" ruta="/ver-ventas"/>   
             <Boton imagen={pizza} className="boton" nombre="Gestionar productos" ruta="/gestion-productos"/>   
             <Boton imagen={impresora} className="boton" nombre="Pedidos" ruta="/pedidos"/>    
         </section>

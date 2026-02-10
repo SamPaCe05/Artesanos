@@ -20,12 +20,15 @@ const BuscarProducto = ({ n }) => {
 
     useEffect(() => {
         const tmpfunc = async () => {
-            const tmp = await filtrarProducto()
-            setPizzas(tmp)
+            if (dato != "") {
+                const tmp = await filtrarProducto()
+                setPizzas(tmp)
+            }
+
         }
 
         tmpfunc()
-        console.log(pizzas)
+        
     },
 
         [dato])
@@ -36,7 +39,7 @@ const BuscarProducto = ({ n }) => {
             <section className='buscar-producto-section'>
                 <h2>Buscar Producto</h2>
                 <form onChange={filtrar}>
-                    <input type="text" placeholder='Ingrese un producto' name='buscador' />
+                    <input type="text" placeholder='Ingrese un producto' name='buscador' className='input-buscar-producto' />
                 </form>
 
                 <div className='busqueda-div'>
@@ -44,16 +47,16 @@ const BuscarProducto = ({ n }) => {
                     <div className='filas-productos'>
 
                         {
-                            pizzas!=null ?(
+                            pizzas != null ? (
                                 pizzas.map((p, index) => (
-                                <FilaProducto key={index} campoUno={p.id} campoDos={p.nombreProducto} campoTres={p.precio} campoCuatro={<MenuBuscar id={p.id} nombre={p.nombreProducto} precio={p.precio} />}/>
-                            ))
-                            ):(
+                                    <FilaProducto key={index} campoUno={p.id} campoDos={p.nombreProducto} campoTres={p.precio} campoCuatro={<MenuBuscar id={p.id} nombre={p.nombreProducto} precio={p.precio} />} />
+                                ))
+                            ) : (
                                 <p>No hay productos que coincidan con la busqueda</p>
                             )
-                                
-                            
-                            
+
+
+
 
 
                         }

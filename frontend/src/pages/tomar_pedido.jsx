@@ -3,7 +3,7 @@ import arrow from '../assets/flecha.png'
 import FilaTomarPedido from '../components/fila_tomar_pedido'
 import { useEffect, useState } from 'react'
 import { apiRequest } from '../services/api'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
 
 const TomarPedido = () => {
@@ -12,10 +12,11 @@ const TomarPedido = () => {
     const token = localStorage.getItem("token")
     const decode = jwtDecode(token);
     const nombre = decode.sub
-
-    console.log(nombre)
+    const navigate = useNavigate()
 
     
+
+
 
     const [visible, setVisible] = useState(false)
 
@@ -40,7 +41,7 @@ const TomarPedido = () => {
 
     const actDigitado = (e) => {
         setDigitado(e.target.value)
-        console.log(e.target.value)
+        
     }
 
     const buscarProductos = async () => {
@@ -49,10 +50,19 @@ const TomarPedido = () => {
         })
     }
 
+    const anularPedido = async () => {
+        return apiRequest(`/api/pedidos/actualizar/${id}/CANCELADO`, {
+            metodo: "PUT"
+        })
+    }
+
     useEffect(() => {
         const traerProductos = async () => {
-            const tmp = await buscarProductos()
-            setProductos(tmp)
+            if (digitado != "") {
+                const tmp = await buscarProductos()
+                setProductos(tmp)
+
+            }
         }
         traerProductos()
 
@@ -139,18 +149,27 @@ const TomarPedido = () => {
     }
 
     const subirPedido = async () => {
-
-
-        if (id != undefined) {
+        if (pedido.length!=0) {
+            if (id != undefined) {
             await actualizarPedido()
         } else {
             await confirmarPedido()
         }
+
+        navigate("/mesera");    
+        }
+
+        
     }
 
-    const cambiarMesa=(e)=>{
-        const tmp=e.target.value;
+    const cambiarMesa = (e) => {
+        const tmp = e.target.value;
         setMesaPedido(tmp)
+    }
+
+    const cancelarPedido = async () => {
+        const tmp = await anularPedido();
+        navigate("/mesera");
     }
 
     return (
@@ -159,9 +178,9 @@ const TomarPedido = () => {
                 {
                     visible && (
                         <div className='selector'>
-                            <h1>Busqueda</h1>
+                            <h1>Búsqueda</h1>
                             <form  >
-                                <input onChange={actDigitado} type="text" placeholder='Ingrese un dato de búsqueda' />
+                                <input onChange={actDigitado} type="text" placeholder='Ingrese un dato de búsqueda' className='input-selector' />
                                 <div className='resultados'>
                                     {productos != null ? (
                                         productos.map((p, index) => {
@@ -181,14 +200,14 @@ const TomarPedido = () => {
                             </form>
                             <button onClick={() => {
                                 setVisible(false)
-                            }}>aceptar</button>
+                            }} className='boton-busqueda'>Aceptar</button>
                         </div>
                     )
                 }
 
                 <div className='main'>
                     <div className='tomar-pedido-div-uno'>
-                        <button className='tomar-pedido-boton-volver'>
+                        <button className='tomar-pedido-boton-volver' onClick={() => navigate("/mesera")}>
                             <img src={arrow} alt="" />
                         </button>
                     </div>
@@ -197,12 +216,12 @@ const TomarPedido = () => {
                         {
                             id != undefined ? (
 
-                                <input type="text" className='input-mesa' onChange={cambiarMesa} value={mesaPedido}/>
+                                <input type="text" className='input-mesa' onChange={cambiarMesa} value={mesaPedido} />
                             ) : (
-                                <input type="text" placeholder="Ingrese un número de mesa" className='input-mesa' onChange={cambiarMesa}/>
+                                <input type="text" placeholder="Ingrese un número de mesa" className='input-mesa' onChange={cambiarMesa} />
                             )
                         }
-                        
+
                     </div>
                     <div className='tomar-pedido-div-tres'>
 
@@ -214,7 +233,7 @@ const TomarPedido = () => {
 
                             {
                                 pedido.map((p, index) => (
-                                    <FilaTomarPedido key={p.nombreProducto} nombre_producto={p.nombreProducto} funcion={funcionDatosHijo} index={p.nombreProducto} precio={p.precioMomento} cantidad={p.cantidadProducto}/>
+                                    <FilaTomarPedido key={p.nombreProducto} nombre_producto={p.nombreProducto} funcion={funcionDatosHijo} index={p.nombreProducto} precio={p.precioMomento} cantidad={p.cantidadProducto} />
                                 ))
                             }
                         </div>
@@ -229,8 +248,19 @@ const TomarPedido = () => {
 
                 <footer className='tomar-pedido-div-cinco'>
                     <div className='div-confirmar-pedido'>
-                        <button className='button-confirmar-pedido' onClick={subirPedido}>Confirmar pedido</button>
-                        <button className='button-anular-pedido'>Anular pedido</button>
+
+                        {id != undefined ? (
+                            <>
+                                <button className='button-confirmar-pedido' onClick={subirPedido}>Confirmar pedido</button>
+                                <button className='button-anular-pedido' onClick={cancelarPedido}>Anular pedido</button>
+                            </>
+
+                        ) : (
+                            <button className='button-confirmar-pedido' onClick={subirPedido}>Confirmar pedido</button>
+                        )
+
+                        }
+
                     </div>
 
                     <h3>Total</h3>
