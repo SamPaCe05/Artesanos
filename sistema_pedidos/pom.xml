@@ -13,7 +13,7 @@
 	<artifactId>sistema_pedidos</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sistema_pedidos</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Sistema de pedidos para Artesanos</description>
 	<url />
 	<licenses>
 		<license />
@@ -92,6 +92,10 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 	</dependencies>
 
