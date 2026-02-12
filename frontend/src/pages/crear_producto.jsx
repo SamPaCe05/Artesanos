@@ -4,6 +4,7 @@ import './crear_producto.css'
 import { useNavigate, useParams } from 'react-router-dom'
 import arrow from '../assets/flecha.png'
 
+import { toast } from 'react-toastify'
 const CrearProducto = () => {
     const { id, nombre, precio } = useParams()
     const navigate=useNavigate();
@@ -35,13 +36,20 @@ const CrearProducto = () => {
             combinable: combinable,
             activo: true
         };
-
-        if (id != undefined) {
-            const actualizar = await actualizarProducto(cuerpo);
+        try {
+        if (id !== undefined) {
+            await actualizarProducto(cuerpo);
+            toast.success("¡Producto actualizado con éxito!");
+            navigate("/gestion-productos");
         } else {
-            const enviar = await enviarProducto(cuerpo);
-        }
-        navigate("/gestion-productos");
+            await enviarProducto(cuerpo);
+            toast.success("¡Producto creado con éxito!");
+            navigate("/gestion-productos");
+                }
+    } 
+        catch (error) {
+        toast.error(`${error.message}`);
+            }
 
     }
 

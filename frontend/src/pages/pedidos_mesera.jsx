@@ -25,7 +25,6 @@ const PedidoMesera = () => {
         const intervalo = setInterval(async () => {
             const res = await traerPedidos()
             setPedidos(res)
-            console.log(res)
         },10000);
 
         return () => clearInterval(intervalo)

@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.artesanos.sistema_pedidos.dtos.ProductoDto;
 import com.artesanos.sistema_pedidos.entities.Producto;
 import com.artesanos.sistema_pedidos.repositories.ProductoRepository;
+
+import jakarta.persistence.criteria.Predicate;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
@@ -78,6 +81,9 @@ public class ProductoServiceImpl implements ProductoService {
     @Transactional
     @Override
     public Optional<Producto> actualizarProducto(Integer id, ProductoDto producto) {
+        if (productoRepository.findByNombreProducto(producto.getNombreProducto()).isPresent()) {
+            return Optional.empty();
+        }
         return productoRepository.findById(id).map(prodOptional -> {
             prodOptional.setActivo(producto.isActivo());
             prodOptional.setNombreProducto(producto.getNombreProducto().toLowerCase());
@@ -89,7 +95,22 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public List<Producto> buscarPorNombreIncompleto(String nombreProducto) {
-        return productoRepository.findByNombreProductoContainingIgnoreCaseAndActivoTrue(nombreProducto.toLowerCase());
+        String busquedaLimpia = nombreProducto.replace("+", " ").trim().toLowerCase();
+
+        String[] palabras = busquedaLimpia.split("\\s+");
+
+        Specification<Producto> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            predicates.add(cb.isTrue(root.get("activo")));
+
+            for (String palabra : palabras) {
+                predicates.add(cb.like(cb.lower(root.get("nombreProducto")), "%" + palabra + "%"));
+            }
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+        
+        return productoRepository.findAll(spec);
     }
 
 }

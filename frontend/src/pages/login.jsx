@@ -3,7 +3,7 @@ import './login.css';
 import loginImg from "../assets/artesanos_logo.jpg";
 import { autenticar } from '../services/autenticacion';
 import { useNavigate } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
 const Login = () => {
     const navigate = useNavigate();
     const [cargando, setCargando] = useState(false);
@@ -14,8 +14,8 @@ const Login = () => {
 
         const data = new FormData(e.target);
         const body = {
-            nombreUsuario: data.get("nombreUsuario"),
-            contrasena: data.get("contrasena")
+            nombreUsuario: data.get("nombreUsuario").trim(),
+            contrasena: data.get("contrasena").trim()
         };
 
         try {
@@ -24,6 +24,7 @@ const Login = () => {
             if (!res || !res.token) {
                 throw new Error("No se recibió un token válido.");
             }
+            toast.success("¡Bienvenido de nuevo!");
 
             localStorage.setItem("token", res.token);
             localStorage.setItem("rol", res.rol || "");
@@ -35,7 +36,6 @@ const Login = () => {
             navigate(destino);
 
         } catch (error) {
-            alert(error.message || "Error al conectar con el servidor");
         } finally {
             setCargando(false);
         }

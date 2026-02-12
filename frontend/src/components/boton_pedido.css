@@ -12,9 +12,11 @@
     padding-right:25px ;
     gap: 5px;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 .boton_pedido_cont div {
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
 }

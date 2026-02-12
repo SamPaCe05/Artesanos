@@ -3,6 +3,7 @@ import FilaProducto from '../components/fila_producto'
 import MenuBuscar from '../components/menu_buscar'
 import { useEffect, useState } from 'react'
 import { apiRequest } from '../services/api'
+import { formateador } from './ver_ventas';
 
 const BuscarProducto = ({ n }) => {
     const [dato, setDato] = useState("")
@@ -47,7 +48,7 @@ const BuscarProducto = ({ n }) => {
                         {
                             pizzas != null ? (
                                 pizzas.map((p, index) => (
-                                    <FilaProducto key={index} campoUno={p.id} campoDos={p.nombreProducto} campoTres={p.precio} campoCuatro={<MenuBuscar id={p.id} nombre={p.nombreProducto} precio={p.precio} />} />
+                                    <FilaProducto key={index} campoUno={p.id} campoDos={p.nombreProducto.charAt(0).toUpperCase() + p.nombreProducto.slice(1)} campoTres={formateador.format(p.precio)} campoCuatro={<MenuBuscar id={p.id} nombre={p.nombreProducto} precio={p.precio} />} />
                                 ))
                             ) : (
                                 <p>No hay productos que coincidan con la busqueda</p>

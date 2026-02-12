@@ -28,7 +28,7 @@ export async function apiRequest(path, options = {}) {
     if (res.status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("rol");
-      window.location.href = "/login";
+      window.location.href = "/";
     }
 
     if (!res.ok) {
@@ -48,6 +48,7 @@ export async function apiRequest(path, options = {}) {
           message = errorText || message;
         }
       } catch (e) {
+        
       }
 
       throw new Error(message);
@@ -62,7 +63,6 @@ export async function apiRequest(path, options = {}) {
 
     return await res.text();
   } catch (error) {
-    console.error("Error en la petición:", error);
     throw error;
   }
 }

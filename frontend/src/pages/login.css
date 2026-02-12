@@ -58,6 +58,7 @@ img {
     border-radius: 20px;
     margin-top: 20px;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .contain-iniciar {

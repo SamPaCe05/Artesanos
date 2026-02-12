@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './fila_tomar_pedido.css'
+import { formateador } from '../pages/ver_ventas';
 
 
 
@@ -7,7 +8,6 @@ import './fila_tomar_pedido.css'
 const FilaTomarPedido = ({ nombre_producto, funcion, index, precio, cantidad }) => {
 
 
-    //const precio=20000
 
     const [cnt, setcnt] = useState(cantidad);
     const [valor, setvalor] = useState(cnt * precio)
@@ -20,7 +20,6 @@ const FilaTomarPedido = ({ nombre_producto, funcion, index, precio, cantidad }) 
     }
     const cambiar_subtotal = () => {
         setvalor(precio * cnt)
-
     }
 
 
@@ -36,7 +35,7 @@ const FilaTomarPedido = ({ nombre_producto, funcion, index, precio, cantidad }) 
                 <div className='fila-tomar-pedido-div-dos'>{nombre_producto}</div>
                 <div className='fila-tomar-pedido-div-tres' onClick={incrementar}>+</div>
                 <div className='fila-tomar-pedido-div-cuatro' onClick={decrementar}>-</div>
-                <div className='fila-tomar-pedido-div-cinco'>${valor}</div>
+                <div className='fila-tomar-pedido-div-cinco'>{formateador.format(valor)}</div>
             </section>
         </>
     )

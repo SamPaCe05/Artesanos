@@ -107,10 +107,12 @@
 
 .fila-boton-uno{
     background-color: red;
+    cursor: pointer;
 }
 
 .fila-boton-dos{
     background-color: green;
+    cursor: pointer;
 }
 
 

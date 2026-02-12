@@ -5,6 +5,7 @@ import { apiRequest } from '../services/api';
 import { useEffect, useRef, useState } from 'react';
 import { useReactToPrint } from "react-to-print";
 import Comanda from './comanda';
+import { formateador } from './ver_ventas';
 
 const VerPedido = ({ n_pedido, n_mesa }) => {
     const [pedido, setPedido] = useState([])
@@ -82,7 +83,7 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
 
                         {
                             pedido.map((p, index) => (
-                                <FilaPedido key={index} nombre={p.nombreProducto} cantidad={p.cantidadProducto} precio={p.precioMomento} subtotal={p.subtotalPedido} />
+                                <FilaPedido key={index} nombre={p.nombreProducto.charAt(0).toUpperCase() + p.nombreProducto.slice(1)} cantidad={p.cantidadProducto} precio={formateador.format(p.precioMomento)} subtotal={formateador.format(p.subtotalPedido)} />
                             ))
                        
                             
@@ -91,7 +92,7 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                     </div>
                     <div className='fila-pedido-total'>
                         <h3>Total</h3>
-                        <div>${total}</div>
+                        <div>{formateador.format(total)}</div>
                     </div>
                 </div>
                 <div className='fila-pedido-div-tres'>

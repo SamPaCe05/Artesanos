@@ -7,6 +7,7 @@ import 'normalize.css';
 import './index.css'
 
 import App from './App.jsx'
+import 'react-toastify/dist/ReactToastify.css';
 
 createRoot(document.getElementById('root')).render(
   

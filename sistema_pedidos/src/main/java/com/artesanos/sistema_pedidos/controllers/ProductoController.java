@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -91,7 +92,7 @@ public class ProductoController {
     @PreAuthorize("hasAuthority('ROLE_CAJA')")
     public ResponseEntity<?> postProducto(@RequestBody ProductoDto productoDto) {
         if (productoService.save(productoDto).isEmpty()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El producto ya existe, actualizalo desde la sección de búsqueda");
         }
         return ResponseEntity.ok().build();
     }
@@ -106,7 +107,7 @@ public class ProductoController {
 
     public ResponseEntity<?> postProducto(@PathVariable Integer id, @RequestBody ProductoDto productoDto) {
         if (productoService.actualizarProducto(id, productoDto).isEmpty()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No es posible actualizar a un producto ya existente");
         }
         return ResponseEntity.ok().build();
     }

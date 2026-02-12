@@ -4,7 +4,11 @@ import { apiRequest } from '../services/api'
 import { useEffect, useState } from 'react'
 import arrow from '../assets/flecha.png'
 import { useNavigate } from 'react-router-dom'
-
+export const formateador = new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    minimumFractionDigits: 0, 
+  });
 const VerVentas = () => {
     const [pedidos, setPedidos] = useState([]);
     const [total, setTotal] = useState(0)
@@ -23,37 +27,37 @@ const VerVentas = () => {
         
     }
 
-    const buscarVentas = async (e) => {
-        e.preventDefault();
-        const fechaInicio = e.target.inicio.value;
-        const fechaFin = e.target.fin.value;
+  const buscarVentas = async (e) => {
+    e.preventDefault();
+    const fechaInicio = e.target.inicio.value;
+    const fechaFin = e.target.fin.value;
 
-        const res = await traerVentas(fechaInicio, fechaFin);
+    const res = await traerVentas(fechaInicio, fechaFin);
 
-        setPedidos(res)
-        console.log(res)
+    setPedidos(res);
+  };
 
-    }
+  useEffect(() => {
+    const ventasActuales = async () => {
+      const hoy = new Date().toISOString().split("T")[0];
+      const res = await traerVentas(hoy, hoy);
+      setPedidos(res);
+    };
+    ventasActuales();
+  }, []);
 
-    useEffect(() => {
-        const ventasActuales = async () => {
-            const hoy = new Date().toISOString().split("T")[0];
-            console.log(hoy)
-            const res = await traerVentas(hoy, hoy)
-            setPedidos(res)
-        }
-        ventasActuales();
-    }, [])
+  useEffect(() => {
+    const acumular = () => {
+      return pedidos.reduce((cnt, p) => {
+        return cnt + p.total;
+      }, 0);
+    };
+    const suma = acumular();
+    setTotal(suma);
+  }, [pedidos]);
+  const precio = 5000;
 
-    useEffect(() => {
-        const acumular = () => {
-            return pedidos.reduce((cnt, p) => {
-                return cnt + p.total
-            },0)
-        }
-        const suma = acumular()
-        setTotal(suma)
-    }, [pedidos])
+  
 
     return (
         <>
@@ -75,25 +79,27 @@ const VerVentas = () => {
                         </div>
                     </div>
 
-                    <div className='pedidos-encontrados'>
-                        {
-                            pedidos.map(p => (
-                                <BotonPedido key={p.id} ruta={`/ver-pedido/${p.id}/${p.numeroMesa}/resuelto`} num_mesa={p.numeroMesa} num_pedido={p.id} />
-                            ))
-                        }
+          <div className="pedidos-encontrados">
+            {pedidos.map((p) => (
+              <BotonPedido
+                key={p.id}
+                ruta={`/ver-pedido/${p.id}/${p.numeroMesa}/resuelto`}
+                num_mesa={p.numeroMesa}
+                num_pedido={p.id}
+              />
+            ))}
+          </div>
 
-                    </div>
+          <div className="footer-ver-ventas">
+            <button type="submit" className="boton-buscar">
+              Buscar
+            </button>
+            <h2 className="total-cierre">Total {formateador.format(total)}</h2>
+          </div>
+        </form>
+      </section>
+    </>
+  );
+};
 
-                    <div className='footer-ver-ventas'>
-                        <button type='submit' className='boton-buscar' >Buscar</button>
-                        <h2 className='total-cierre'>Total Dia ${total}</h2>
-                    </div>
-
-                </form>
-
-            </section>
-        </>
-    )
-}
-
-export default VerVentas
+export default VerVentas;

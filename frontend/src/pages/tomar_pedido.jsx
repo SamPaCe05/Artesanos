@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react'
 import { apiRequest } from '../services/api'
 import { useNavigate, useParams } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
-
+import { formateador } from './ver_ventas'
+import { toast } from 'react-toastify';
 const TomarPedido = () => {
 
     const { id, mesa } = useParams();
@@ -152,10 +153,14 @@ const TomarPedido = () => {
             if (id != undefined) {
             await actualizarPedido()
         } else {
-            await confirmarPedido()
+            try {
+                await confirmarPedido()
+                navigate("/mesera");    
+                toast.success("¡Pedido confirmado con éxito!");
+            } catch (error) {
+                toast.error(`${error.message }`);
+            }
         }
-
-        navigate("/mesera");    
         }
 
         
@@ -232,7 +237,7 @@ const TomarPedido = () => {
 
                             {
                                 pedido.map((p, index) => (
-                                    <FilaTomarPedido key={p.nombreProducto} nombre_producto={p.nombreProducto} funcion={funcionDatosHijo} index={p.nombreProducto} precio={p.precioMomento} cantidad={p.cantidadProducto} />
+                                    <FilaTomarPedido key={p.nombreProducto} nombre_producto={p.nombreProducto.charAt(0).toUpperCase() + p.nombreProducto.slice(1)} funcion={funcionDatosHijo} index={p.nombreProducto} precio={p.precioMomento} cantidad={p.cantidadProducto} />
                                 ))
                             }
                         </div>
@@ -263,7 +268,7 @@ const TomarPedido = () => {
                     </div>
 
                     <h3>Total</h3>
-                    <h3>${total}</h3>
+                    <h3>{formateador.format(total)}</h3>
                 </footer>
             </section>
 
