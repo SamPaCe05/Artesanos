@@ -7,5 +7,37 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     display: grid;
     grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     place-items: center;
+}
+
+.boton-gestion-productos{
+    justify-self: left;
+    align-self: self-start;
+    width: 30px;
+    height: 30px;
+    margin-left: 40px;
+    margin-top: 40px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: none;
+}
+
+.boton-gestion-productos img{
+    margin: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.boton-numero-uno-gestion{
+    grid-row: 1;
+    grid-column: 2;
+    margin-top: 40px;
+}
+
+.boton-numero-dos-gestion{
+    grid-row: 2;
+    grid-column: 2;
+    margin-bottom: 40px;
 }

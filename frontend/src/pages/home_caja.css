@@ -17,5 +17,6 @@
 }
 
 .boton:hover{
-    transform: scale(0.9); /* se retrae */
+    transform: scale(0.9); 
+    
 }

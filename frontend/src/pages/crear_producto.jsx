@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { apiRequest } from '../services/api'
 import './crear_producto.css'
 import { useNavigate, useParams } from 'react-router-dom'
+import arrow from '../assets/flecha.png'
 
 const CrearProducto = () => {
     const { id, nombre, precio } = useParams()
@@ -50,7 +51,10 @@ const CrearProducto = () => {
         <>
             <section className='crear-producto-sec'>
                 <form onSubmit={capturarDatos} className='form-crear-producto'>
-                    <div><h1 className='titulo-nuevo-producto'>Nuevo Producto</h1></div>
+                    <div className='div-head-crear-producto'>
+                        <button className='boton-flecha-crear-producto' onClick={()=>navigate('/gestion-productos')}><img src={arrow} alt="" /></button>
+                        <h1 className='titulo-nuevo-producto'>Nuevo Producto</h1>
+                        </div>
                     <div className='crear-producto-inputs'>
                         <label htmlFor="" className='labels-nuevo-producto'>Nombre del producto</label>
                         {id != undefined ? (

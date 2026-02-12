@@ -23,3 +23,17 @@ html {
   height: 100%;
   width: 100%;
 }
+
+@media (min-width: 1024px) {
+  #root::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("./assets/imagenArtesanosPizzas.png");
+    background-repeat: repeat;
+    background-size: 400px;
+    opacity: 0.2;
+    pointer-events: none;
+    z-index: -1;
+  }
+}

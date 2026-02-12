@@ -2,15 +2,25 @@ import './ver_ventas.css'
 import BotonPedido from '../components/boton_pedido'
 import { apiRequest } from '../services/api'
 import { useEffect, useState } from 'react'
+import arrow from '../assets/flecha.png'
+import { useNavigate } from 'react-router-dom'
 
 const VerVentas = () => {
     const [pedidos, setPedidos] = useState([]);
     const [total, setTotal] = useState(0)
+    const navigate=useNavigate();
 
     const traerVentas = async (inicio, fin) => {
-        return apiRequest(`/api/pedidos/resueltos/cierre/${inicio}/${fin}`, {
+        try{
+            return await apiRequest(`/api/pedidos/resueltos/cierre/${inicio}/${fin}`, {
             metodo: "GET"
         })
+        }catch(err){
+            const msj=String(err?.message||err);
+            if(msj.includes("404"))return [];
+            throw err;
+        }
+        
     }
 
     const buscarVentas = async (e) => {
@@ -49,7 +59,11 @@ const VerVentas = () => {
         <>
             <section className='sec-ver-ventas'>
                 <form onSubmit={buscarVentas}>
-                    <h2>Historial Pedidos</h2>
+                    <div className='div-titulo-ver-ventas'>
+                        <button onClick={()=>navigate('/caja')}><img src={arrow} alt="" /></button>
+                        <h2>Historial Pedidos</h2>    
+                    </div>
+                    
                     <div className='contenedor-fechas'>
                         <div className='div-fechas'>
                             <label htmlFor="">Fecha Inicio</label>

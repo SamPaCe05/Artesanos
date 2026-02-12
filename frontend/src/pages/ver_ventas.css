@@ -9,6 +9,34 @@
     place-items: center;
     box-shadow: 0 6px 10px rgba(0,0,0,0.4);
 }
+.div-titulo-ver-ventas{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+}
+
+.div-titulo-ver-ventas button{
+    grid-column: 1;
+    justify-self: left;
+    margin-left: 20px;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: none;
+}
+
+.div-titulo-ver-ventas img{
+    width: 20px;
+    height: 20px;
+    margin: 0;
+}
+
+.div-titulo-ver-ventas h2{
+    grid-column: 2;
+}
+
 
 .div-fechas{
     display: flex;

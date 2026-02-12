@@ -2,10 +2,13 @@ import './pedidos.css'
 import BotonPedido from '../components/boton_pedido'
 import { apiRequest } from '../services/api'
 import { useEffect, useState } from 'react'
+import arrow from '../assets/flecha.png'
+import { useNavigate } from 'react-router-dom'
 
 const Pedidos = () => {
 
     const [pedido, setPedido] = useState([])
+    const navigate=useNavigate();
 
     const listarPedidos = () => {
         return apiRequest("/api/pedidos/listar", {
@@ -39,7 +42,11 @@ const Pedidos = () => {
     return (
         <>
             <section className='pedidos_section'>
-                <h2>Pedidos</h2>
+                <div className='div-head-pedidos'>
+                    <button onClick={()=>navigate('/caja')}><img src={arrow} alt="" /></button>
+                    <h2>Pedidos</h2>
+                </div>
+                
                 <div className='scroll_pedidos'>
                     {pedido!=null?(
                         pedido.map(p => (

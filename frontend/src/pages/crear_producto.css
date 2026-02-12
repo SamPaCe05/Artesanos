@@ -54,9 +54,36 @@
 
 
 .titulo-nuevo-producto{
-    margin: 40px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: center;
 }
 
 .labels-nuevo-producto{
     font-weight: 500;
+}
+
+.div-head-crear-producto{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    width: 100%;
+    
+}
+
+.boton-flecha-crear-producto{
+    grid-column: 1;
+    margin: 40px;
+    margin-top: 50px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+}
+
+.boton-flecha-crear-producto img{
+    margin: 0;
+    width: 20px;
+    height: 20px;
 }

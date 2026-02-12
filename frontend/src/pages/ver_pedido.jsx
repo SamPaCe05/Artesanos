@@ -16,7 +16,7 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
 
     const pedidoPorId = async () => {
         return apiRequest(`/api/detallePedido/${id}`, {
-            metodo: "GET"
+            metodo: "GET" 
         })
     }
 
@@ -123,7 +123,7 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                 </div>
             </section>
             <div className='comanda'>
-                    <Comanda ref={comandaRef} pedido={pedido}/>
+                    <Comanda ref={comandaRef} pedido={pedido} id={id} mesa={mesa} total={total}/>
             </div>
         </>
     )
