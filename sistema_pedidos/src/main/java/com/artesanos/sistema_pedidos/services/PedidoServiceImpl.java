@@ -1,6 +1,6 @@
 package com.artesanos.sistema_pedidos.services;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +76,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         pedido.setUsuario(usuario.orElseThrow());
         pedido.setNumeroMesa(pedidoDto.getNumeroMesa());
-        pedido.setFechaPedido(LocalDate.now());
+        pedido.setFechaPedido(LocalDateTime.now());
         pedido.setEstadoPedido(EstadoPedido.PENDIENTE);
         pedido.setDetallesPedido(detallePedidos);
         pedido.setTotalPedido(total);
@@ -137,7 +137,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public List<PedidoDto> findByFechaPedidoBetweenAndEstadoPedido(LocalDate inicio, LocalDate fin) {
+    public List<PedidoDto> findByFechaPedidoBetweenAndEstadoPedido(LocalDateTime inicio, LocalDateTime fin) {
         return pedidoRepository.findByFechaPedidoBetweenAndEstadoPedido(inicio, fin, EstadoPedido.RESUELTO);
     }
 

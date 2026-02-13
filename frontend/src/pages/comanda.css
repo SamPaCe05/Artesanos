@@ -1,56 +1,92 @@
+.comanda-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.logo-comanda {
+  width: 60px;
+  height: auto;
+  display: block;
+  margin: 0 auto 5px auto;
+}
+.mesa {
+  font-size: 18px;
+  font-weight: normal;
+  margin-top: 5px;
+}
 @media print {
+  @page {
+    margin: 0;
+  }
+
   .div-comanda {
     width: 80mm;
     margin: 0 auto;
     display: grid;
     grid-template-rows: auto 1fr;
     place-items: center;
+    font-family: Arial, sans-serif;
   }
 
-  .sec-dos-imprimir{
+  .logo-comanda {
+    max-width: 50mm;
+    margin-bottom: 2mm;
+  }
+
+  .sec-dos-imprimir {
     display: flex;
     flex-direction: column;
     width: 100%;
   }
 
-  .cabeceras{
+  .cabeceras {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1.5fr 0.5fr 1fr;
     place-items: center;
     width: 100%;
-    font-weight: 600;
+    font-weight: 700;
     text-align: center;
+    border-bottom: 1px dashed #000;
+    margin-bottom: 2mm;
   }
-
-  .articulos{
-    display: flex;
-    flex-direction: column;
+  .txt-mesa {
+    font-size: 28pt;
+    border: 1px solid #000;
+    padding: 2mm;
+    width: fit-content;
+    margin: 2mm auto;
   }
-
-  .items-pedido{
+  .items-pedido {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1.5fr 0.5fr 1fr;
     place-items: center;
     width: 100%;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
     text-align: center;
-    justify-self:center ;
+    padding: 1mm 0;
   }
 
-  .totales-pedido{
+  .name-prd-comanda {
+    justify-self: start;
+    text-align: left;
+    max-width: 100%;
+    word-wrap: break-word;
+  }
+
+  .totales-pedido {
+    margin-top: 10mm;
+    border-top: 1px solid #000;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    justify-items: center;
-  }
-  .name-prd-comanda{
-    max-width: 75%;
-    
-  }
 
-}
-@media print {
-  @page {
-    margin: 0;
+    justify-items: center;
+    font-size: 18px;
+    width: 100%;
+  }
+  .totales-pedido h3 {
+    grid-column: 2;
+    justify-self: end;
+    margin-right: 2mm;
   }
 }

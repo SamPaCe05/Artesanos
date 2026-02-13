@@ -17,20 +17,21 @@ const VerVentas = () => {
 
   const traerVentas = async (inicio, fin) => {
     try {
-      toast.success("Ventas obtenidas");
       const response = await apiRequest(
         `/api/pedidos/resueltos/cierre/${inicio}/${fin}`,
         {
           metodo: "GET",
         }
       );
+      toast.success("Ventas obtenidas");
       return response
     } catch (err) {
       const msj = String(err?.message || err);
       if (msj.includes("404")) {
-        toast.error("¡Error al cargar las ventas!");
+        toast.info("No se encontraron ventas en ese rango de fechas");
         return [];
       }
+      toast.error("¡Error al cargar las ventas!");
 
       throw err;
     }
@@ -65,7 +66,6 @@ const VerVentas = () => {
     const suma = acumular();
     setTotal(suma);
   }, [pedidos]);
-  const precio = 5000;
 
   return (
     <>

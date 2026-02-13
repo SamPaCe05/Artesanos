@@ -168,6 +168,10 @@ const TomarPedido = () => {
 
     const cambiarMesa = (e) => {
         const tmp = e.target.value;
+        if (typeof(tmp) === 'string' && tmp.trim() === '') {
+            toast.error("¡Número de mesa inválido!");
+            return;
+        }
         setMesaPedido(tmp)
     }
 

@@ -18,9 +18,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,7 +51,7 @@ public class PedidoController {
     @PreAuthorize("hasAnyAuthority('ROLE_CAJA', 'ROLE_MESERA')")
     public ResponseEntity<List<PedidoDto>> getPedidos() {
         List<PedidoDto> pedidos = pedidoService.listarPedidos();
-        
+
         return ResponseEntity.ok().body(pedidos);
     }
 
@@ -102,9 +105,15 @@ public class PedidoController {
     @Operation(summary = "Buscar los pedidos Pagados para el cierre de caja")
     @GetMapping("/resueltos/cierre/{inicio}/{fin}")
     @PreAuthorize("hasAuthority('ROLE_CAJA')")
-    public ResponseEntity<List<PedidoDto>> getPedidosPorFecha(@PathVariable LocalDate inicio,
-            @PathVariable LocalDate fin) {
-        List<PedidoDto> pedidos = pedidoService.findByFechaPedidoBetweenAndEstadoPedido(inicio, fin);
+    public ResponseEntity<List<PedidoDto>> getPedidosPorFecha(
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fin) {
+
+        LocalDateTime fechaInicio = inicio.atStartOfDay(); // 2026-02-13 00:00:00
+        LocalDateTime fechaFin = fin.atTime(LocalTime.MAX); // 2026-02-13 23:59:59.99999
+        System.out.println(fechaFin);
+        System.out.println(fechaInicio);
+        List<PedidoDto> pedidos = pedidoService.findByFechaPedidoBetweenAndEstadoPedido(fechaInicio, fechaFin);
         if (pedidos.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

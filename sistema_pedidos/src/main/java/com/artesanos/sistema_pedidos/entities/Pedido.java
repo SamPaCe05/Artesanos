@@ -1,6 +1,6 @@
 package com.artesanos.sistema_pedidos.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class Pedido {
     @Column(name = "pk_pedido")
     Integer id;
     @Column(name = "fecha_pedido")
-    LocalDate fechaPedido;
+    LocalDateTime fechaPedido;
     @Column(name = "total")
     Integer totalPedido;
     @Column(name = "n_mesa")

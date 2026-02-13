@@ -1,6 +1,6 @@
 package com.artesanos.sistema_pedidos.repositories;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,6 +37,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
                                 p.numeroMesa
                             ) from Pedido p where p.fechaPedido between ?1 and ?2 and p.estadoPedido = ?3
                         """)
-    public List<PedidoDto> findByFechaPedidoBetweenAndEstadoPedido(LocalDate inicio, LocalDate fin,
+    public List<PedidoDto> findByFechaPedidoBetweenAndEstadoPedido(LocalDateTime inicio, LocalDateTime fin,
             EstadoPedido estadoPedido);
 }

@@ -1,21 +1,26 @@
 import { forwardRef } from 'react'
 import './comanda.css'
 import { formateador } from './ver_ventas'
-
+import logo from '../assets/artesanos_logo.jpg'
 const Comanda = forwardRef(({ pedido, id, mesa, total }, ref) => {
     return (
 
         <div ref={ref} className='div-comanda'>
-            <div>
+            <div className='comanda-header'>
+                <img 
+                    src={logo} 
+                    alt="Logo Artesanos" 
+                    className='logo-comanda'
+                />
                 <h1>Artesanos Pizza</h1>
                 <h2>Pedido N. {id}</h2>
-                <p>Mesa {mesa}</p>
+                <p className='mesa'>Mesa {mesa}</p>
             </div>
 
             <div className='sec-dos-imprimir'>
                 <div className='cabeceras'>
                     <p>Productos</p>
-                    <p>Cnt</p>
+                    <p>Cantidad</p>
                     <p>Subtotal</p>
                 </div>
                 <div className='articulos'>
