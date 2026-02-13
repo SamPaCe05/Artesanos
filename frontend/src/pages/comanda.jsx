@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import './comanda.css'
+import { formateador } from './ver_ventas'
 
 const Comanda = forwardRef(({ pedido, id, mesa, total }, ref) => {
     return (
@@ -22,14 +23,14 @@ const Comanda = forwardRef(({ pedido, id, mesa, total }, ref) => {
                     {
                         pedido.map(p => (
                             <div className='items-pedido'>
-                                <p>{p.nombreProducto}</p>
+                                <p className='name-prd-comanda'>{p.nombreProducto.charAt(0).toUpperCase() + p.nombreProducto.slice(1)}</p>
                                 <p>{p.cantidadProducto}</p>
-                                <p>{p.subtotalPedido}</p>
+                                <p>{formateador.format(p.subtotalPedido)}</p>
                             </div>
                         ))
                     }
                     <div className='totales-pedido'>
-                        <h3>Total {total}</h3>
+                        <h3>Total {formateador.format(total)}</h3>
                     </div>
                 </div>
 

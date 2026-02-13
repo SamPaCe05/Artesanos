@@ -22,6 +22,7 @@
     grid-column: 1;
     width: 90%;
     height: 100%;
+    text-align: center;
 }
 .ver-pedido-div-dos{
     grid-column: 2;

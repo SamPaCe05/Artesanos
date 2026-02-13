@@ -10,7 +10,7 @@ const GestionProductos = () => {
     return (
         <>
             <section className='gestion_sec'>
-                <button className='boton-gestion-productos' onClick={()=>navigate('/caja')}><img src={arrow} alt="" /></button>
+                <button type='button' className='boton-gestion-productos' onClick={()=>navigate('/caja')}><img src={arrow} alt="" /></button>
                 <div className='boton-numero-uno-gestion'>
                     <Boton imagen={nuevo} className={"boton"} nombre="Crear producto" ruta="/crear-producto"/>
                 </div>

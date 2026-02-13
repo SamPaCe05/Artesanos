@@ -1,123 +1,115 @@
 .sec {
     display: grid;
     justify-items: center;
-    padding: 50px;
-    height: 350px;
+    padding: 40px; 
+    min-height: 400px; 
     width: 500px;
-    margin: 0 auto;
-    border: solid gainsboro 1px;
+    margin: 40px auto;
+    border: 1px solid gainsboro;
     border-radius: 10px;
     background-color: #F3F2F2;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    padding-bottom: 100px;
 }
 
 .sec h3 {
     font-weight: 800;
     font-size: 22px;
+    margin-bottom: 15px;
 }
 
 img {
-
     width: 30%;
     height: auto;
+    margin-bottom: 15px;
 }
 
 .lbl {
     display: block;
     font-weight: 500;
     font-size: 14px;
-    justify-self: left;
-    margin-bottom: 2px;
+    justify-self: start; 
+    margin-bottom: 5px;
 }
 
 .user-contain,
 .passw-contain {
-    width: 55%;
-    margin-top: 10px;
-    border: none;
-    display: block;
+    width: 70%; 
+    margin-top: 15px;
 }
 
 .user,
 .passw {
     width: 100%;
-    height: 20px;
+    height: 35px; 
     border-radius: 20px;
-    border: none;
+    border: 1px solid #ccc;
     background-color: #DCDBDA;
-    padding: 5px;
+    padding: 0 15px;
+    box-sizing: border-box; 
 }
 
 .iniciar {
     background-color: #043D0E;
     color: #FFFFFF;
     border: none;
-    padding: 5px;
-    width: 185px;
+    padding: 10px;
+    width: 200px;
     border-radius: 20px;
-    margin-top: 20px;
+    margin-top: 25px;
     font-weight: 600;
     cursor: pointer;
-}
-
-.contain-iniciar {
-    border: none;
+    transition: background 0.3s;
 }
 
 
-
-@media (max-width:768px) {
+@media (max-width: 768px) {
     .sec {
-        margin-top: 220px;
-        width: 100%;
-        height: 80%;
-        place-items: center;
-        background-color: white;
+        margin-top: 20px;
+        width: 90%; 
+        max-width: 100%;
+        height: auto; 
+        padding: 30px 15px;
+        background-color: #ffffff; 
         border: none;
-        box-shadow: none;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .sec h3 {
-        font-weight: 800;
-        font-size: 55px;
+        font-size: 28px; 
+        margin-bottom: 20px;
     }
 
     img {
-
-        width: 50%;
-        height: auto;
+        width: 40%;
+        margin-bottom: 20px;
     }
 
     .user-contain,
     .passw-contain {
-        width: 85%;
-        margin-top: 10px;
-    }
-
-    .iniciar {
-
-        margin-top: 80px;
-        width: 400px;
-        height: 50px;
-        font-size: 30px;
-
+        width: 90%; 
+        margin-top: 20px;
     }
 
     .user,
     .passw {
-        font-size: 30px;
-        height: 50px;
+        height: 50px; 
+        font-size: 16px;
     }
 
     .lbl {
-
-
-        font-size: 30px;
-        margin-bottom: 20px;
+        font-size: 16px;
+        margin-bottom: 8px;
     }
-}
 
-.form-login{
-    display: contents;
+    .iniciar {
+        margin-top: 40px; 
+        width: 80%;
+        height: 55px;
+        font-size: 20px;
+        justify-self: center;
+    }
+    .contain-iniciar{
+        width: 100%;
+        display: grid;
+    }
 }

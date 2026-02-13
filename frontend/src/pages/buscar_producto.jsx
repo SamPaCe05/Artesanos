@@ -4,6 +4,10 @@ import MenuBuscar from '../components/menu_buscar'
 import { useEffect, useState } from 'react'
 import { apiRequest } from '../services/api'
 import { formateador } from './ver_ventas';
+import arrow from '../assets/flecha.png'
+import { useNavigate } from 'react-router-dom'
+
+
 
 const BuscarProducto = ({ n }) => {
     const [dato, setDato] = useState("")
@@ -11,6 +15,7 @@ const BuscarProducto = ({ n }) => {
     const filtrar = (e) => {
         setDato(e.target.value)
     }
+    const navigate = useNavigate();
 
     const filtrarProducto = async () => {
         return apiRequest(`/api/producto/listar/${dato}`, {
@@ -36,7 +41,11 @@ const BuscarProducto = ({ n }) => {
     return (
         <>
             <section className='buscar-producto-section'>
-                <h2>Buscar Producto</h2>
+                <div className='title-buscar-producto'>
+                    <button onClick={() => navigate('/gestion-productos')}><img src={arrow} alt="" /></button>
+                    <h2>Buscar Producto</h2>
+                </div>
+
                 <form onChange={filtrar}>
                     <input type="text" placeholder='Ingrese un producto' name='buscador' className='input-buscar-producto' />
                 </form>

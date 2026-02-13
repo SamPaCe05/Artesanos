@@ -17,12 +17,14 @@ const VerVentas = () => {
 
   const traerVentas = async (inicio, fin) => {
     try {
-       return await apiRequest(
+      toast.success("Ventas obtenidas");
+      const response = await apiRequest(
         `/api/pedidos/resueltos/cierre/${inicio}/${fin}`,
         {
           metodo: "GET",
-        },
+        }
       );
+      return response
     } catch (err) {
       const msj = String(err?.message || err);
       if (msj.includes("404")) {
@@ -46,7 +48,8 @@ const VerVentas = () => {
 
   useEffect(() => {
     const ventasActuales = async () => {
-      const hoy = new Date().toISOString().split("T")[0];
+      const hoy = new Date().toLocaleDateString("en-CA");
+
       const res = await traerVentas(hoy, hoy);
       setPedidos(res);
     };
@@ -69,7 +72,7 @@ const VerVentas = () => {
       <section className="sec-ver-ventas">
         <form onSubmit={buscarVentas}>
           <div className="div-titulo-ver-ventas">
-            <button onClick={() => navigate("/caja")}>
+            <button type="button" onClick={() => navigate("/caja")}>
               <img src={arrow} alt="" />
             </button>
             <h2>Historial Pedidos</h2>

@@ -58,11 +58,12 @@ const CrearProducto = () => {
     return (
         <>
             <section className='crear-producto-sec'>
-                <form onSubmit={capturarDatos} className='form-crear-producto'>
-                    <div className='div-head-crear-producto'>
-                        <button className='boton-flecha-crear-producto' onClick={()=>navigate('/gestion-productos')}><img src={arrow} alt="" /></button>
+                <div className='div-head-crear-producto'>
+                        <button type='button' className='boton-flecha-crear-producto' onClick={()=>navigate('/gestion-productos')}><img src={arrow} alt="" /></button>
                         <h1 className='titulo-nuevo-producto'>Nuevo Producto</h1>
                         </div>
+                <form onSubmit={capturarDatos} className='form-crear-producto'>
+                    
                     <div className='crear-producto-inputs'>
                         <label htmlFor="" className='labels-nuevo-producto'>Nombre del producto</label>
                         {id != undefined ? (

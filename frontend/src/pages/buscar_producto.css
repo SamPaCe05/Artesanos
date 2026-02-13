@@ -48,3 +48,25 @@ h2{
     border: none;
     gap: 7px;
 }
+
+.title-buscar-producto{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    place-items: center;
+}
+
+.title-buscar-producto button{
+    justify-self: left;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: none;
+}
+
+.title-buscar-producto img{
+    margin: 0;
+    width: 20px;
+    height: 20px;
+}
