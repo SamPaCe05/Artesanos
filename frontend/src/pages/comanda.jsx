@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import './comanda.css'
 import { formateador } from './ver_ventas'
-import logo from '../assets/artesanos_logo.jpg'
+import logo from '../assets/artesanosFactura.jpg'
 const Comanda = forwardRef(({ pedido, id, mesa, total }, ref) => {
     return (
 
@@ -12,7 +12,6 @@ const Comanda = forwardRef(({ pedido, id, mesa, total }, ref) => {
                     alt="Logo Artesanos" 
                     className='logo-comanda'
                 />
-                <h1>Artesanos Pizza</h1>
                 <h2>Pedido N. {id}</h2>
                 <p className='mesa'>Mesa {mesa}</p>
             </div>

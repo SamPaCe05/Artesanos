@@ -94,6 +94,11 @@ body{
     font-size: 18px;
     font-weight: 700;
     border-radius:7px;
+    transition: background-color 0.3s ease; 
+}
+.button-confirmar-pedido:disabled {
+    background-color: #A9A9A9; 
+    color: #666666;           
 }
 
 .button-anular-pedido{

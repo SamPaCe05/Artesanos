@@ -1,6 +1,7 @@
 package com.artesanos.sistema_pedidos.services;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +77,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         pedido.setUsuario(usuario.orElseThrow());
         pedido.setNumeroMesa(pedidoDto.getNumeroMesa());
-        pedido.setFechaPedido(LocalDateTime.now());
+        pedido.setFechaPedido(LocalDateTime.now(ZoneId.of("America/Bogota")));
         pedido.setEstadoPedido(EstadoPedido.PENDIENTE);
         pedido.setDetallesPedido(detallePedidos);
         pedido.setTotalPedido(total);

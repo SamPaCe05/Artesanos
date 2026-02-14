@@ -21,10 +21,10 @@ const VerVentas = () => {
         `/api/pedidos/resueltos/cierre/${inicio}/${fin}`,
         {
           metodo: "GET",
-        }
+        },
       );
       toast.success("Ventas obtenidas");
-      return response
+      return response;
     } catch (err) {
       const msj = String(err?.message || err);
       if (msj.includes("404")) {
@@ -50,7 +50,7 @@ const VerVentas = () => {
   useEffect(() => {
     const ventasActuales = async () => {
       const hoy = new Date().toLocaleDateString("en-CA");
-
+      console.log(hoy);
       const res = await traerVentas(hoy, hoy);
       setPedidos(res);
     };

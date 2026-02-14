@@ -11,6 +11,7 @@
     align-self: start;
     box-sizing: border-box;
     padding: 10px;
+    overflow-y:auto;
 }
 
 .pedido-mesera-head{

@@ -149,9 +149,11 @@ const TomarPedido = () => {
     }
 
     const subirPedido = async () => {
-        if (pedido.length!=0) {
+        if (pedido.length!=0) {            
             if (id != undefined) {
             await actualizarPedido()
+                navigate("/mesera");    
+                toast.success("¡Pedido actualizado con éxito!");
         } else {
             try {
                 await confirmarPedido()
@@ -167,12 +169,22 @@ const TomarPedido = () => {
     }
 
     const cambiarMesa = (e) => {
-        const tmp = e.target.value;
-        if (typeof(tmp) === 'string' && tmp.trim() === '') {
-            toast.error("¡Número de mesa inválido!");
-            return;
-        }
-        setMesaPedido(tmp)
+        const valorOriginal = e.target.value;
+    
+    if (valorOriginal.trim() === '' || isNaN(valorOriginal)) {
+        setMesaPedido(0);
+        toast.error("¡Número de mesa inválido!", { toastId: "error-mesa" });
+        return;
+    }
+
+    const numMesa = parseInt(valorOriginal, 10);
+
+    if (numMesa <= 0 || numMesa > 100) {
+        setMesaPedido(0);
+        toast.error("Rango de mesa inválido (1-100)", { toastId: "error-mesa" });
+        return;
+    }
+    setMesaPedido(numMesa);
     }
 
     const cancelarPedido = async () => {
@@ -259,12 +271,12 @@ const TomarPedido = () => {
 
                         {id != undefined ? (
                             <>
-                                <button className='button-confirmar-pedido' onClick={subirPedido}>Confirmar pedido</button>
+                                <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido ==0} onClick={subirPedido}>Confirmar pedido</button>
                                 <button className='button-anular-pedido' onClick={cancelarPedido}>Anular pedido</button>
                             </>
 
                         ) : (
-                            <button className='button-confirmar-pedido' onClick={subirPedido}>Confirmar pedido</button>
+                            <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido ==0} onClick={subirPedido}>Confirmar pedido</button>
                         )
 
                         }
