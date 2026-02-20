@@ -36,7 +36,8 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
                                 p.id,
                                 p.totalPedido,
                                 p.numeroMesa, 
-                                p.nombreDomicilio
+                                p.nombreDomicilio, 
+                                p.estadoPago
                             ) from Pedido p where p.fechaPedido between ?1 and ?2 and p.estadoPedido = ?3
                         """)
     public List<PedidoDto> findByFechaPedidoBetweenAndEstadoPedido(LocalDateTime inicio, LocalDateTime fin,

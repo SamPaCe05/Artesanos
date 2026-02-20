@@ -44,7 +44,7 @@ public class Pedido {
     @Column(name = "estado")
     EstadoPedido estadoPedido;
     @Enumerated(EnumType.STRING)
-    @Column(name = "estadoPago")
+    @Column(name = "estado_pago")
     EstadoPago estadoPago;
     @Column(name = "nombreDomicilio")
     String nombreDomicilio;
