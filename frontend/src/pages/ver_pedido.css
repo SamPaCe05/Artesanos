@@ -91,7 +91,7 @@
 .fila-pedido-div-tres div{
     display: grid;
     place-items: center;
-    border: 0;
+    
 }
 
 .fila-pedido-div-tres button{
@@ -119,6 +119,27 @@
 .comanda{
     display: none;
 }
+
+.boton-opciones{
+  background-color: #F3F8F8;
+  padding: 5px 5px 5px 5px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: 5px;
+}
+
+.opcion-menu{
+    width: 100%;
+}
+
+.opcion-menu:hover{
+    background-color: #D2D3D3;
+    font-weight: 500;
+
+}
+
 
 @media print{
     .comanda{

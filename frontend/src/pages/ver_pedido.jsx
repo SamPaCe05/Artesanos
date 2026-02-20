@@ -4,18 +4,24 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { apiRequest } from '../services/api';
 import { useEffect, useRef, useState } from 'react';
 import { formateador } from './ver_ventas';
+import { useReactToPrint } from "react-to-print";
+
 
 const VerPedido = ({ n_pedido, n_mesa }) => {
     const [pedido, setPedido] = useState([])
     const [cantidad, setCantidad] = useState(0)
     const { id, mesa, estado } = useParams();
     const [total, setTotal] = useState(0)
+    const [alternar, setAlternar] = useState(false);
     const comandaRef = useRef();
-    const navigate=useNavigate();
+    const botonref = useRef(null)
+    const [pos, setPos] = useState(null)
+    const navigate = useNavigate();
+    const timer = useRef(null);
 
     const pedidoPorId = async () => {
         return apiRequest(`/api/detallePedido/${id}`, {
-            metodo: "GET" 
+            metodo: "GET"
         })
     }
 
@@ -31,30 +37,30 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
         })
     }
 
-    const cancelarPedido=async()=>{
-        const tmp=await anularPedido();
+    const cancelarPedido = async () => {
+        const tmp = await anularPedido();
         navigate("/pedidos");
     }
 
     const resolverPedido = async () => {
         const tmp = await confirmarPedido()
-        navigate("/pedidos");   
+        navigate("/pedidos");
     }
     useEffect(() => {
         const traerPedido = async () => {
             const tmp = await pedidoPorId()
             setCantidad(tmp.length)
             setPedido(tmp)
-            const suma=tmp.reduce((cnt,p)=>{
-                return cnt+p.subtotalPedido
-            },0)
+            const suma = tmp.reduce((cnt, p) => {
+                return cnt + p.subtotalPedido
+            }, 0)
             setTotal(suma)
         }
         traerPedido()
     }, [])
 
-    const imprimir=useReactToPrint({
-        contentRef:comandaRef
+    const imprimir = useReactToPrint({
+        contentRef: comandaRef
     });
 
 
@@ -83,8 +89,8 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                             pedido.map((p, index) => (
                                 <FilaPedido key={index} nombre={p.nombreProducto.charAt(0).toUpperCase() + p.nombreProducto.slice(1)} cantidad={p.cantidadProducto} precio={formateador.format(p.precioMomento)} subtotal={formateador.format(p.subtotalPedido)} />
                             ))
-                       
-                            
+
+
                         }
 
                     </div>
@@ -96,7 +102,7 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                 <div className='fila-pedido-div-tres'>
                     {estado != undefined ? (
                         <>
-                            
+
 
                             <div>
                                 <button className='fila-boton-dos' onClick={imprimir}>Imprimir Comanda</button>
@@ -109,13 +115,54 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                                 <button className='fila-boton-uno' onClick={cancelarPedido}>Anular Pedido</button>
                             </div>
                             <div>
-                                <button className='fila-boton-dos' onClick={resolverPedido}>Confirmar Pago</button>
+                                <button ref={botonref} className='fila-boton-dos' onClick={() => {
+                                    setPos({
+                                        top: botonref.current.getBoundingClientRect().bottom + window.scrollY,
+                                        left: botonref.current.getBoundingClientRect().left + window.scrollX+6
+                                    })
+                                }
+                                }
+                                    onMouseLeave={() => {
+                                        timer.current = setTimeout(() => {
+                                            if (alternar == false) {
+                                                setPos(null);
+                                            }
+                                        }, 2000);
+                                    }}>Confirmar Pago</button>
                             </div>
                             <div>
                                 <button className='fila-boton-dos' onClick={imprimir}>Imprimir Comanda</button>
                             </div>
                         </>
                     )
+                    }
+                    {pos != null ?
+                        (
+                            <div className='boton-opciones'
+                                style={{
+                                    position: 'absolute',
+                                    top: pos.top,
+                                    left: pos.left,        
+                                    
+                                }}
+                                onMouseLeave={() => {
+                                    setPos(null)
+                                    setAlternar(false)
+                                    clearTimeout(timer.current)
+                                }}
+                                onMouseEnter={() => {
+                                    setAlternar(true)
+                                    clearTimeout(timer.current)
+                                }}
+                            >
+                                <div className='opcion-menu'>Pago transferencia</div>
+                                <div className='opcion-menu'>Pago en efectivo</div>
+                                <div className='opcion-menu'>Pago con tarjeta</div>
+                            </div>
+
+                        ) : (
+                            <></>
+                        )
 
                     }
 

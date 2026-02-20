@@ -11,7 +11,8 @@ const HomeCaja = () => {
         <section className='caja'>
             <Boton imagen={ventas} className="boton" nombre="Buscar ventas" ruta="/ver-ventas"/>   
             <Boton imagen={pizza} className="boton" nombre="Gestionar productos" ruta="/gestion-productos"/>   
-            <Boton imagen={impresora} className="boton" nombre="Pedidos" ruta="/pedidos"/>    
+            <Boton imagen={impresora} className="boton" nombre="Pedidos" ruta="/pedidos"/>      
+            <Boton imagen={impresora} className="boton" nombre="Pedidos" ruta="/pedidos"/>      
         </section>
     )
 }
