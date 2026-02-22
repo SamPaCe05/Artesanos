@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.artesanos.sistema_pedidos.dtos.ComandaDto;
 import com.artesanos.sistema_pedidos.dtos.FacturaDto;
-import com.artesanos.sistema_pedidos.services.PdfService;
-import com.artesanos.sistema_pedidos.services.networkPrinterService;
+import com.artesanos.sistema_pedidos.services.NetworkPrinterService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -35,13 +33,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(path = "/api/impresora")
 @Tag(name = "Impresora", description = "Envia informacion para imprimir")
 public class ImpresoraController {
-    private final PdfService pdfService;
-    private final networkPrinterService networkPrinterService;
+    private final NetworkPrinterService networkPrinterService;
 
-    public ImpresoraController(PdfService pdfService,
-            networkPrinterService networkPrinterService) {
+    public ImpresoraController(
+            NetworkPrinterService networkPrinterService) {
         this.networkPrinterService = networkPrinterService;
-        this.pdfService = pdfService;
     }
 
     @ApiResponses(value = {
@@ -84,13 +80,10 @@ public class ImpresoraController {
 
             String domicilio = payload.getNombreDomicilio();
             data.put("nombreDomicilio", (domicilio == null || domicilio.isBlank()) ? null : domicilio);
-
             data.put("fecha", payload.getFechaFactura());
             data.put("pedido", payload.getProductos());
             data.put("total", payload.getTotal());
-            byte[] pdf = pdfService.crearFactura(data);
-
-            networkPrinterService.printPdfToNetworkPrinter(pdf, printerIp);
+            networkPrinterService.imprimirFactura(data, printerIp);
 
             return ResponseEntity.ok("Impresión enviada exitosamente a: " + printerIp);
 
@@ -121,9 +114,7 @@ public class ImpresoraController {
             data.put("nombreDomicilio", (domicilio == null || domicilio.isBlank()) ? null : domicilio);
 
             data.put("pedido", payload.getProductos());
-            byte[] pdf = pdfService.crearComanda(data);
-
-            networkPrinterService.printPdfToNetworkPrinter(pdf, printerIp);
+            networkPrinterService.imprimirCocina(data, printerIp);
 
             return ResponseEntity.ok("Impresión enviada exitosamente a: " + printerIp);
 
@@ -133,40 +124,4 @@ public class ImpresoraController {
         }
     }
 
-    @Operation(summary = "Vista previa factura")
-    @SuppressWarnings("null")
-    @PostMapping("/invoice/test-view")
-    public ResponseEntity<byte[]> testView(@RequestBody FacturaDto payload) {
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("id", payload.getIdPedido());
-        data.put("mesa", payload.getNumeroMesa());
-        data.put("fecha", payload.getFechaFactura());
-        data.put("nombreDomicilio", payload.getNombreDomicilio());
-        data.put("pedido", payload.getProductos());
-        data.put("total", payload.getTotal());
-
-        byte[] pdf = pdfService.crearFactura(data);
-        return ResponseEntity.ok()
-                .header("Content-Disposition", "inline; filename=factura.pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdf);
-    }
-    @Operation(summary = "Vista previa comanda")
-    @SuppressWarnings("null")
-    @PostMapping("/command/test-view")
-    public ResponseEntity<byte[]> testViewComanda(@RequestBody ComandaDto payload) {
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("id", payload.getIdPedido());
-        data.put("mesa", payload.getNumeroMesa());
-        data.put("nombreDomicilio", payload.getNombreDomicilio());
-        data.put("pedido", payload.getProductos());
-
-        byte[] pdf = pdfService.crearComanda(data);
-        return ResponseEntity.ok()
-                .header("Content-Disposition", "inline; filename=factura.pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdf);
-    }
 }
