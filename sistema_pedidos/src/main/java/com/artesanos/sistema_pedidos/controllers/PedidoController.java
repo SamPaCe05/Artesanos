@@ -61,7 +61,7 @@ public class PedidoController {
     })
     @Operation(summary = "Crear pedidos")
     @PostMapping("/crear/{nombreUsuario}")
-    @PreAuthorize("hasAuthority('ROLE_MESERA')")
+    @PreAuthorize("hasAnyAuthority('ROLE_CAJA', 'ROLE_MESERA')")
     public ResponseEntity<?> postPedido(@RequestBody PedidoDto pedidoDto, @PathVariable String nombreUsuario) {
         Optional<Pedido> pedido = pedidoService.save(pedidoDto, nombreUsuario);
         if (pedido.isEmpty()) {
