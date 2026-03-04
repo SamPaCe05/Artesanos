@@ -14,6 +14,7 @@ public class FacturaDto {
     LocalDate fechaFactura;
     String numeroMesa;
     String nombreDomicilio;
+    String numeroCliente; 
     List<ProductoDetalleDto> productos;
     Integer total;
 
@@ -23,8 +24,9 @@ public class FacturaDto {
 //     "idPedido": 101,
 //     "impresoraIp": "192.168.0.100",
 //     "fechaFactura": "2026-02-17",
-//     "numeroMesa": "1",
-//     "nombreDomicilio": "",
+//     "numeroMesa": "",
+//     "nombreDomicilio": "Maximus",
+//     "numeroCliente": "3102278330",
 //     "productos": [
 //         {
 //             "nombreProducto": "pizza albahaca a la vaca + espanta brujas ",

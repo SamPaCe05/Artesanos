@@ -24,7 +24,8 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
                 select new com.artesanos.sistema_pedidos.dtos.PedidoDto(
                     p.id,
                     p.numeroMesa,
-                    p.nombreDomicilio
+                    p.nombreDomicilio,
+                    p.numeroCliente
                 )
                 from Pedido p
                 where p.estadoPedido = 'PENDIENTE'
@@ -37,7 +38,8 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
                                 p.totalPedido,
                                 p.numeroMesa, 
                                 p.nombreDomicilio, 
-                                p.estadoPago
+                                p.estadoPago, 
+                                p.numeroCliente
                             ) from Pedido p where p.fechaPedido between ?1 and ?2 and p.estadoPedido = ?3
                         """)
     public List<PedidoDto> findByFechaPedidoBetweenAndEstadoPedido(LocalDateTime inicio, LocalDateTime fin,

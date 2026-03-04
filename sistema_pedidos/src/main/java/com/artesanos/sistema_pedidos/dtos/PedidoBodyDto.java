@@ -16,6 +16,7 @@ public class PedidoBodyDto {
     List<ProductoDetalleDto> productos;
     String nombreDomicilio;
     EstadoPago estadoPago;
+    String numeroCliente;
 
     public PedidoBodyDto(Integer numeroMesa, List<ProductoDetalleDto> productoDtos) {
         this.numeroMesa = numeroMesa;

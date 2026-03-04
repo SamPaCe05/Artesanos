@@ -48,6 +48,8 @@ public class Pedido {
     EstadoPago estadoPago;
     @Column(name = "nombreDomicilio")
     String nombreDomicilio;
+    @Column(name = "numero_cliente", columnDefinition = "VARCHAR(300)")
+    String numeroCliente;
 
     @ManyToOne
     @JoinColumn(name = "fk_id_usuario")

@@ -20,18 +20,22 @@ public class PedidoDto {
     List<ProductoDetalleDto> productos;
     String nombreDomicilio;
     EstadoPago estadoPago;
+    String numeroCliente;
 
-    public PedidoDto(Integer id, Integer total, Integer numeroMesa, String nombreDomicilio, EstadoPago estadoPago) {
+    public PedidoDto(Integer id, Integer total, Integer numeroMesa, String nombreDomicilio, EstadoPago estadoPago,
+            String numeroCliente) {
         this.id = id;
         this.total = total;
         this.numeroMesa = numeroMesa;
         this.nombreDomicilio = nombreDomicilio;
         this.estadoPago = estadoPago;
+        this.numeroCliente = numeroCliente;
     }
 
-    public PedidoDto(Integer id, Integer numeroMesa, String nombreDomicilio) {
+    public PedidoDto(Integer id, Integer numeroMesa, String nombreDomicilio, String numeroCliente) {
         this.id = id;
         this.numeroMesa = numeroMesa;
         this.nombreDomicilio = nombreDomicilio;
+        this.numeroCliente = numeroCliente;
     }
 }

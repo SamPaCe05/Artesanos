@@ -86,6 +86,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotalPedido(total);
         pedido.setNombreDomicilio(pedidoDto.getNombreDomicilio());
         pedido.setEstadoPago(EstadoPago.NO_PAGO);
+        pedido.setNumeroCliente(pedidoDto.getNumeroCliente());
 
         return Optional.of(pedidoRepository.save(pedido));
 
@@ -113,6 +114,7 @@ public class PedidoServiceImpl implements PedidoService {
             }
             if (pedidoBodyDto.getNombreDomicilio() != null) {
                 pedido.setNombreDomicilio(pedidoBodyDto.getNombreDomicilio());
+                pedido.setNumeroCliente(pedidoBodyDto.getNumeroCliente());
             }
 
             if (pedidoBodyDto.getProductos() == null) {
