@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.artesanos.sistema_pedidos.dtos.ComandaDto;
 import com.artesanos.sistema_pedidos.dtos.FacturaDto;
-import com.artesanos.sistema_pedidos.services.NetworkPrinterService;
+import com.artesanos.sistema_pedidos.services.networkPrinterService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,10 +24,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(path = "/api/impresora")
 @Tag(name = "Impresora", description = "Envia informacion para imprimir")
 public class ImpresoraController {
-    private final NetworkPrinterService networkPrinterService;
+    private final networkPrinterService networkPrinterService;
 
     public ImpresoraController(
-            NetworkPrinterService networkPrinterService) {
+            networkPrinterService networkPrinterService) {
         this.networkPrinterService = networkPrinterService;
     }
 

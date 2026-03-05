@@ -118,16 +118,10 @@ const TomarPedido = () => {
 
 
     const confirmarPedido = async () => {
-        console.log(mesaPedido)
-        console.log(mesaPedido)
-        console.log(domi)
-        console.log(nombreDomicilio)
-        console.log(mesaPedido)
-
-        return apiRequest(`/api/pedidos/crear/${nombre}`, {
-            metodo: "POST",
-            body:
-                mesaPedido != null ? {
+        if (mesaPedido != null) {
+            return apiRequest(`/api/pedidos/crear/${nombre}`, {
+                metodo: "POST",
+                body: {
                     numeroMesa: mesaPedido,
                     total: total,
                     productos: pedido.map(p => ({
@@ -137,7 +131,13 @@ const TomarPedido = () => {
                         precioMomento: p.precioMomento,
                         peticionCliente: p.peticionCliente
                     }))
-                } : {
+                }
+            })
+        } else {
+            return apiRequest(`/api/pedidos/crear/domicilio/${nombre}`, {
+                metodo: "POST",
+                body:
+                {
                     numeroMesa: 0,
                     total: total,
                     productos: pedido.map(p => ({
@@ -149,9 +149,10 @@ const TomarPedido = () => {
                     })),
                     nombreDomicilio: nombreDomicilio,
                 }
-
-        })
+            })
+        }
     }
+
 
     const actualizarPedido = async () => {
         return apiRequest(`/api/pedidos/actualizar/${id}`, {
@@ -169,7 +170,7 @@ const TomarPedido = () => {
                     )
                     )
                 } : {
-                    numeroMesa: null,
+                    numeroMesa: 0,
                     productos: pedido.map(p => ({
                         nombreProducto: p.nombreProducto,
                         cantidadProducto: p.cantidadProducto,
@@ -245,6 +246,16 @@ const TomarPedido = () => {
 
         ))
         console.log(peticion)
+    }
+
+    const imprimirComanda = async () => {
+        return apiRequest('/api/impresora/comanda', {
+            metodo: 'POST',
+            body:{
+                idPedido:id
+            }
+        }
+        )
     }
 
     return (
