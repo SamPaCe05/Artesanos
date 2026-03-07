@@ -199,45 +199,50 @@ body {
         padding: 20px;
     }
 
-    .main{
+    .main {
         display: grid;
         grid-template-rows: auto 1fr 3fr;
         grid-template-columns: 1fr 1fr 1fr;
         overflow-y: hidden;
     }
 
-    .tomar-pedido-div-cuatro{
-        grid-column: 3;
+    .tomar-pedido-div-cuatro {
+        grid-column: 2/4;
         grid-row: 2;
         margin: 0;
-        
+
     }
 
-    .tomar-pedido-div-tres{
+    .tomar-pedido-div-tres {
         grid-column: 1/4;
         grid-row: 3;
         padding-left: 20px;
-        
+
         grid-template-rows: auto 1fr;
     }
 
-    .tomar-pedido-div-dos{
+    .tomar-pedido-div-dos {
         grid-column: 1;
         grid-row: 2;
         margin: 0;
+        margin-left: 20px;
         justify-self: center;
-    }
-    .tomar-pedido-div-uno{
-        grid-column: 1;
-        grid-row: 1;
-        
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        grid-template-rows: 1fr;
     }
 
-    .tomar-pedido-boton-volver{
+    .tomar-pedido-div-uno {
+        grid-column: 1;
+        grid-row: 1;
+
+    }
+
+    .tomar-pedido-boton-volver {
         width: 60px;
     }
 
-    .items-pedido{
+    .items-pedido {
         overflow-y: auto;
         align-self: self-start;
         grid-row: 2;
@@ -245,48 +250,62 @@ body {
         scrollbar-width: none;
     }
 
-    
 
-    .tomar-pedido-div-cuatro button{
+
+    .tomar-pedido-div-cuatro button {
         height: 35px;
         font-size: 15px;
     }
 
-    .button-confirmar-pedido{
-        height: 35px;
-        font-size: 15px;
-        width: 70%;
-        justify-self: center;
-    }
-    
-    .button-anular-pedido{
+    .button-confirmar-pedido {
         height: 35px;
         font-size: 15px;
         width: 70%;
         justify-self: center;
     }
 
-    .tomar-pedido-div-cinco{
+    .button-anular-pedido {
+        height: 35px;
+        font-size: 15px;
+        width: 70%;
+        justify-self: center;
+    }
+
+    .tomar-pedido-div-cinco {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         height: 100px;
         align-self: center;
     }
 
-    .div-confirmar-pedido{
+    .div-confirmar-pedido {
         display: grid;
         place-items: center;
     }
 
-    .tomar-pedido-text-total{
+    .tomar-pedido-text-total {
         justify-self: right;
     }
 
-    .selector{
+    .selector {
         width: 40%;
         height: 65%;
         max-height: 100%;
         margin-top: 25px;
-        box-shadow: 0 6px 10px rgba(0,0,0,0.6);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .cel-cliente {
+        grid-row: 2;
+        margin-top: 5px;
+        border-radius: 10px;
+        background-color: #D3D2D2;
+        border: none;
+        padding: 5px;
+    }
+
+    .label-cel {
+        grid-row: 1;
+        font-weight: 600;
     }
 }

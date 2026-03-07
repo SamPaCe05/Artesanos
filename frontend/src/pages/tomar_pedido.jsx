@@ -27,6 +27,7 @@ const TomarPedido = () => {
     const [total, setTotal] = useState(0)
     const [mesaPedido, setMesaPedido] = useState(id != undefined ? (mesa === 0 ? undefined : mesa) : null)
     const [nombreDomicilio, setNombreDomicilio] = useState(id != undefined ? domi : null)
+    const [celCliente, setCelCliente] = useState(null)
 
 
     useEffect(() => {
@@ -148,6 +149,7 @@ const TomarPedido = () => {
                         peticionCliente: p.peticionCliente
                     })),
                     nombreDomicilio: nombreDomicilio,
+                    numeroCliente: celCliente
                 }
             })
         }
@@ -181,7 +183,8 @@ const TomarPedido = () => {
                     )
                     ),
                     nombreDomicilio: nombreDomicilio,
-                    estadoPago: "NO_PAGO"
+                    estadoPago: "NO_PAGO",
+                    numeroCliente: celCliente
                 }
 
 
@@ -192,12 +195,48 @@ const TomarPedido = () => {
         if (pedido.length != 0) {
             if (id != undefined) {
                 await actualizarPedido()
-                //navigate("/mesera");
+                imprimirComanda({
+                    idPedido: id,
+                    impresoraIp: "192.168.1.200",
+                    numeroMesa: mesaPedido,
+                    nombreDomicilio: nombreDomicilio,
+                    productos: pedido.map(p => ({
+                        nombreProducto: p.nombreProducto,
+                        cantidadProducto: p.cantidadProducto,
+                        subtotalPedido: p.subtotalPedido,
+                        precioMomento: p.precioMomento,
+                        peticionCliente: p.peticionCliente
+                    }
+                    ))
+                })
+                if (mesaPedido != null) {
+                    navigate("/mesera");
+                } else {
+                    navigate("/gestionar-domis")
+                }
+
                 toast.success("¡Pedido actualizado con éxito!");
             } else {
                 try {
-                    await confirmarPedido()
-                    //  navigate("/mesera");
+                    const res_id = await confirmarPedido()
+
+                    const pedidoImprimir = await apiRequest(`/api/detallePedido/${res_id.id}`, {
+                        metodo: "GET"
+                    })
+
+                    imprimirComanda({
+                        idPedido: res_id.id,
+                        impresoraIp: "192.168.1.200",
+                        numeroMesa: mesaPedido,
+                        nombreDomicilio: nombreDomicilio,
+                        productos: pedidoImprimir
+                    })
+
+                    if (mesaPedido != null) {
+                        navigate("/mesera");
+                    } else {
+                        navigate("/gestionar-domis")
+                    }
                     toast.success("¡Pedido confirmado con éxito!");
                 } catch (error) {
                     toast.error(`${error.message}`);
@@ -231,6 +270,10 @@ const TomarPedido = () => {
         const nameDomi = e.target.value;
         setNombreDomicilio(nameDomi);
     }
+    const cambiarCel = (e) => {
+        const val = e.target.value;
+        setCelCliente(val);
+    }
 
     const cancelarPedido = async () => {
         const tmp = await anularPedido();
@@ -248,12 +291,10 @@ const TomarPedido = () => {
         console.log(peticion)
     }
 
-    const imprimirComanda = async () => {
+    const imprimirComanda = async (cuerpo) => {
         return apiRequest('/api/impresora/comanda', {
             metodo: 'POST',
-            body:{
-                idPedido:id
-            }
+            body: cuerpo
         }
         )
     }
@@ -321,8 +362,16 @@ const TomarPedido = () => {
 
                                 ) : (
                                     <>
-                                        <label htmlFor="" className='numero-mesa'>Nombre cliente</label>
-                                        <input type="text" className='input-mesa' onChange={cambiarDomi} value={nombreDomicilio} />
+                                        <div>
+                                            <label htmlFor="" className='numero-mesa'>Nombre cliente</label>
+                                            <input type="text" className='input-mesa' onChange={cambiarDomi} value={nombreDomicilio} />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="" className='label-cel'>Cel cliente</label>
+                                            <input type="text" className='cel-cliente' placeholder='Cel' onChange={cambiarCel} />
+                                        </div>
+
+
                                     </>
 
                                 )
@@ -332,8 +381,15 @@ const TomarPedido = () => {
                             ) : (
                                 domi != undefined ? (
                                     <>
-                                        <label htmlFor="" className='numero-mesa'>Nombre cliente</label>
-                                        <input type="text" placeholder="Ingrese el nombre del cliente" className='input-mesa' onChange={cambiarDomi} />
+                                        <div>
+                                            <label htmlFor="" className='numero-mesa'>Nombre cliente</label>
+                                            <input type="text" placeholder="Ingrese el nombre del cliente" className='input-mesa' onChange={cambiarDomi} />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="" className='label-cel'>Cel cliente</label>
+                                            <input type="text" className='cel-cliente' placeholder='Cel' onChange={cambiarCel} />
+                                        </div>
+
                                     </>
 
                                 ) : (

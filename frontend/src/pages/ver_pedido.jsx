@@ -10,7 +10,7 @@ import { useReactToPrint } from "react-to-print";
 const VerPedido = ({ n_pedido, n_mesa }) => {
     const [pedido, setPedido] = useState([])
     const [cantidad, setCantidad] = useState(0)
-    const { id, mesa, estado,domi } = useParams();
+    const { id, mesa, estado, domi } = useParams();
     const [total, setTotal] = useState(0)
     const [alternar, setAlternar] = useState(false);
     const comandaRef = useRef();
@@ -18,10 +18,16 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
     const [pos, setPos] = useState(null)
     const navigate = useNavigate();
     const timer = useRef(null);
+    const [celular, setCelular] = useState(null)
 
     const pedidoPorId = async () => {
         return apiRequest(`/api/detallePedido/${id}`, {
             metodo: "GET"
+        })
+    }
+    const listarPedido = async () => {
+        return apiRequest('/api/pedidos/listar', {
+            metodo: 'GET'
         })
     }
 
@@ -59,9 +65,51 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
         traerPedido()
     }, [])
 
+    useEffect(() => {
+        const cargarCel = async () => {
+            const pediList = await listarPedido()
+            const pedidoCel = pediList.find(p => p.id === Number(id))
+            if (pedidoCel.numeroCliente != undefined) {
+                setCelular(pedidoCel.numeroCliente)
+            }
+        }
+        cargarCel()
+    }, [])
+
     const imprimir = useReactToPrint({
         contentRef: comandaRef
+
     });
+
+    const impresionFac = async () => {
+        await imprimirFactura({
+            idPedido: id,
+            impresoraIp: "192.168.1.100",
+            numeroMesa: mesa != undefined ? mesa : null,
+            nombreDomicilio: domi != undefined ? domi : null,
+            numeroCliente: celular,
+            productos: pedido.map(p => (
+                {
+                    nombreProducto: p.nombreProducto,
+                    cantidadProducto: p.cantidadProducto,
+                    subtotalPedido: p.subtotalPedido,
+                    precioMomento: p.precioMomento,
+                    peticionCliente: p.peticionCliente
+                }
+            )),
+            total: total
+
+        })
+
+    }
+
+    const imprimirFactura = async (cuerpo) => {
+        return apiRequest('/api/impresora/factura', {
+            metodo: 'POST',
+            body: cuerpo
+        })
+    }
+
 
 
 
@@ -73,14 +121,14 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                         <h3>Pedido {id}</h3>
                     </div>
                     <div className='fila-pedido-text-mesa'>
-                        {domi!=undefined?(
+                        {domi != undefined ? (
                             <h3>{domi}</h3>
-                        ):(
+                        ) : (
                             <h3>Mesa N.{mesa}</h3>
                         )
-                            
+
                         }
-                        
+
                     </div>
                 </div>
                 <div className='fila-pedido-div-dos'>
@@ -112,7 +160,7 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
 
 
                             <div>
-                                <button className='fila-boton-dos' onClick={imprimir}>Imprimir Comanda</button>
+                                <button className='fila-boton-dos' onClick={() => impresionFac}>Imprimir Comanda</button>
                             </div>
                         </>
 
@@ -125,7 +173,7 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                                 <button ref={botonref} className='fila-boton-dos' onClick={() => {
                                     setPos({
                                         top: botonref.current.getBoundingClientRect().bottom + window.scrollY,
-                                        left: botonref.current.getBoundingClientRect().left + window.scrollX+6
+                                        left: botonref.current.getBoundingClientRect().left + window.scrollX + 6
                                     })
                                 }
                                 }
@@ -138,7 +186,7 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                                     }}>Confirmar Pago</button>
                             </div>
                             <div>
-                                <button className='fila-boton-dos' onClick={imprimir}>Imprimir Comanda</button>
+                                <button className='fila-boton-dos' onClick={impresionFac}>Imprimir Comanda</button>
                             </div>
                         </>
                     )
@@ -149,8 +197,8 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                                 style={{
                                     position: 'absolute',
                                     top: pos.top,
-                                    left: pos.left,        
-                                    
+                                    left: pos.left,
+
                                 }}
                                 onMouseLeave={() => {
                                     setPos(null)
@@ -162,9 +210,9 @@ const VerPedido = ({ n_pedido, n_mesa }) => {
                                     clearTimeout(timer.current)
                                 }}
                             >
-                                <div className='opcion-menu' onClick={()=>resolverPedido("TRANSFERENCIA")}>Pago transferencia</div>
-                                <div className='opcion-menu' onClick={()=>resolverPedido("EFECTIVO")}>Pago en efectivo</div>
-                                <div className='opcion-menu' onClick={()=>resolverPedido("DATAFONO")}>Pago con tarjeta</div>
+                                <div className='opcion-menu' onClick={() => resolverPedido("TRANSFERENCIA")}>Pago transferencia</div>
+                                <div className='opcion-menu' onClick={() => resolverPedido("EFECTIVO")}>Pago en efectivo</div>
+                                <div className='opcion-menu' onClick={() => resolverPedido("DATAFONO")}>Pago con tarjeta</div>
                             </div>
 
                         ) : (

@@ -44,11 +44,7 @@ const PedidoMesera = () => {
                         + Nuevo pedido
                     </button>
 
-                    <button className='boton-nuevo-pedido' onClick={() => {
-                        navigate(`/tomar-pedido/${true}`)
-                    }}>
-                        + Nuevo Domi
-                    </button>
+                    
                 </div>
 
 
@@ -58,7 +54,7 @@ const PedidoMesera = () => {
                         {pedidos != null ? (
                             pedidos.map(p => (
                                 p.numeroMesa === 0 ? (
-                                    <BotonPedido key={p.id} num_mesa={p.nombreDomicilio} num_pedido={p.id} ruta={`/tomar-pedido/domi/${p.id}/${p.nombreDomicilio}`} />
+                                    <></>
                                 ) : (
                                     <BotonPedido key={p.id} num_mesa={p.numeroMesa} num_pedido={p.id} ruta={`/tomar-pedido/${p.id}/${p.numeroMesa}`} />
                                 )
