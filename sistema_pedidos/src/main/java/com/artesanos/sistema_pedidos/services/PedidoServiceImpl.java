@@ -194,4 +194,8 @@ public Optional<Pedido> actualizarPedido(Integer id, PedidoBodyDto pedidoBodyDto
         return pedidoRepository.findByFechaPedidoBetweenAndEstadoPedido(inicio, fin, EstadoPedido.RESUELTO);
     }
 
+    @Override
+    public List<PedidoDto> findEstadoPedidoResuelto() {
+        return pedidoRepository.findEstadoPedidoResuelto(EstadoPedido.RESUELTO);
+    }
 }

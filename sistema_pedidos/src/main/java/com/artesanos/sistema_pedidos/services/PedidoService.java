@@ -18,4 +18,6 @@ public interface PedidoService {
     public Optional<Pedido> actualizarPedido(Integer id, PedidoBodyDto pedidoBodyDto);
 
     public List<PedidoDto> findByFechaPedidoBetweenAndEstadoPedido(LocalDateTime inicio, LocalDateTime fin);
+
+    public List<PedidoDto> findEstadoPedidoResuelto();
 }
