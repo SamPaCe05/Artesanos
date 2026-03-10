@@ -91,14 +91,36 @@ public class networkPrinterService {
     }
 
     public void imprimirCocina(Map<String, Object> data, String ipImpresora) throws IOException {
-        try (TcpIpOutputStream outputStream = new TcpIpOutputStream(ipImpresora, 9100);
-                EscPos escpos = new EscPos(outputStream)) {
+    try (TcpIpOutputStream outputStream = new TcpIpOutputStream(ipImpresora, 9100);
+            EscPos escpos = new EscPos(outputStream)) {
+        
+        Style normalCocinaStyle = new Style().setFontSize(Style.FontSize._1, Style.FontSize._2);
+        Style resaltadoStyle = new Style()
+                .setFontSize(Style.FontSize._1, Style.FontSize._2)
+                .setColorMode(Style.ColorMode.WhiteOnBlack)
+                .setBold(true);
 
-            Style normalCocinaStyle = new Style().setFontSize(Style.FontSize._1, Style.FontSize._2);
-            Style resaltadoStyle = new Style()
-                    .setFontSize(Style.FontSize._1, Style.FontSize._2)
-                    .setColorMode(Style.ColorMode.WhiteOnBlack)
-                    .setBold(true);
+        @SuppressWarnings("unchecked")
+        List<ProductoDetalleDto> productos = (List<ProductoDetalleDto>) data.get("pedido");
+
+        boolean imprimirDoble = false;
+        if (productos != null) {
+            imprimirDoble = productos.stream().anyMatch(prod -> {
+                if (prod.getNombreProducto() == null) return false;
+                String nombreLower = prod.getNombreProducto().toLowerCase();
+                return !nombreLower.startsWith("pizza") 
+                    && !nombreLower.startsWith("lasaña") 
+                    && !nombreLower.startsWith("adicion");
+            });
+        }
+
+        int repeticiones = imprimirDoble ? 2 : 1;
+
+        for (int i = 0; i < repeticiones; i++) {
+            
+            if (i == 1) {
+                escpos.writeLF(new Style().setBold(true), "*** COPIA ***");
+            }
 
             printLogo(escpos);
 
@@ -108,9 +130,6 @@ public class networkPrinterService {
             String cabecera = format3ColumnsMultiLineKitchen("CANT", "PRODUCTO", "PETICION", PRINTER_CHAR_WIDTH).get(0);
             escpos.writeLF(boldLeft, cabecera);
             escpos.writeLF("------------------------------------------------");
-
-            @SuppressWarnings("unchecked")
-            List<ProductoDetalleDto> productos = (List<ProductoDetalleDto>) data.get("pedido");
 
             if (productos != null && !productos.isEmpty()) {
 
@@ -130,7 +149,14 @@ public class networkPrinterService {
 
                 for (ProductoDetalleDto prod : productos) {
                     String cant = prod.getCantidadProducto() != null ? String.valueOf(prod.getCantidadProducto()) : "1";
+                    
                     String nombre = prod.getNombreProducto() != null ? prod.getNombreProducto() : "Producto";
+                    if (nombre.toLowerCase().startsWith("pizza ")) {
+                        nombre = nombre.substring(6).trim(); 
+                    } else if (nombre.toLowerCase().equals("pizza")) {
+                        nombre = ""; 
+                    }
+
                     String peticion = (prod.getPeticionCliente() != null && !prod.getPeticionCliente().isBlank())
                             ? prod.getPeticionCliente()
                             : "";
@@ -154,12 +180,18 @@ public class networkPrinterService {
                 }
             }
             escpos.writeLF("------------------------------------------------");
-            finalizarTicket(escpos, "Fin comanda");
+            
+            if (i == 0 && repeticiones == 2) {
+                finalizarTicket(escpos, "Fin comanda (1/2)"); 
+            } else {
+                finalizarTicket(escpos, "Fin comanda");
+            }
+        } 
 
-        } catch (Exception e) {
-            throw new IOException("Fallo en la impresión: " + e.getMessage(), e);
-        }
+    } catch (Exception e) {
+        throw new IOException("Fallo en la impresión: " + e.getMessage(), e);
     }
+}
 
     private void printLogo(EscPos escpos) throws IOException {
         Resource resource = resourceLoader.getResource("classpath:static/images/artesanosFactura.jpg");
