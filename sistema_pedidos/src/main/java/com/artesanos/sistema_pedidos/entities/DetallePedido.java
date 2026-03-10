@@ -1,5 +1,7 @@
 package com.artesanos.sistema_pedidos.entities;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +33,8 @@ public class DetallePedido {
     Integer cantidadProducto;
     @Column(name = "peticionCliente", columnDefinition = "VARCHAR(300)")
     String peticionCliente;
+    @Column(name = "fecha_modificacion")
+    LocalDateTime fechaModificacion;
     @ManyToOne
     @JoinColumn(name = "fk_n_pedido")
     Pedido pedido;

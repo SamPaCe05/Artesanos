@@ -19,11 +19,14 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Locale;
+import java.util.Objects;
 
 @Service
-public class networkPrinterService {
+public class NetworkPrinterService {
 
     private final ResourceLoader resourceLoader;
 
@@ -35,7 +38,7 @@ public class networkPrinterService {
             .setJustification(EscPosConst.Justification.Center);
     private final Style normal = new Style().setFontSize(Style.FontSize._1, Style.FontSize._1);
 
-    public networkPrinterService(ResourceLoader resourceLoader) {
+    public NetworkPrinterService(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
@@ -90,7 +93,13 @@ public class networkPrinterService {
     public void imprimirCocina(Map<String, Object> data, String ipImpresora) throws IOException {
         try (TcpIpOutputStream outputStream = new TcpIpOutputStream(ipImpresora, 9100);
                 EscPos escpos = new EscPos(outputStream)) {
+
             Style normalCocinaStyle = new Style().setFontSize(Style.FontSize._1, Style.FontSize._2);
+            Style resaltadoStyle = new Style()
+                    .setFontSize(Style.FontSize._1, Style.FontSize._2)
+                    .setColorMode(Style.ColorMode.WhiteOnBlack)
+                    .setBold(true);
+
             printLogo(escpos);
 
             escpos.writeLF(boldCenter, "Pedido #" + data.getOrDefault("id", ""));
@@ -103,20 +112,45 @@ public class networkPrinterService {
             @SuppressWarnings("unchecked")
             List<ProductoDetalleDto> productos = (List<ProductoDetalleDto>) data.get("pedido");
 
-            if (productos != null) {
+            if (productos != null && !productos.isEmpty()) {
+
+                LocalDateTime fechaMayor = productos.stream()
+                        .map(ProductoDetalleDto::getFechaModificacion)
+                        .filter(Objects::nonNull)
+                        .max(Comparator.naturalOrder())
+                        .orElse(null);
+
+                LocalDateTime fechaMenor = productos.stream()
+                        .map(ProductoDetalleDto::getFechaModificacion)
+                        .filter(Objects::nonNull)
+                        .min(Comparator.naturalOrder())
+                        .orElse(null);
+
+                boolean debeResaltar = fechaMayor != null && fechaMenor != null && !fechaMayor.equals(fechaMenor);
+
                 for (ProductoDetalleDto prod : productos) {
                     String cant = prod.getCantidadProducto() != null ? String.valueOf(prod.getCantidadProducto()) : "1";
                     String nombre = prod.getNombreProducto() != null ? prod.getNombreProducto() : "Producto";
                     String peticion = (prod.getPeticionCliente() != null && !prod.getPeticionCliente().isBlank())
                             ? prod.getPeticionCliente()
                             : "";
+
                     List<String> lineasProducto = format3ColumnsMultiLineKitchen(cant, nombre, peticion,
                             PRINTER_CHAR_WIDTH);
 
-                    for (String linea : lineasProducto) {
-                        escpos.writeLF(normalCocinaStyle, linea);
+                    boolean esModificado = debeResaltar
+                            && prod.getFechaModificacion() != null
+                            && prod.getFechaModificacion().equals(fechaMayor);
+
+                    Style estiloAUsar = esModificado ? resaltadoStyle : normalCocinaStyle;
+
+                    if (esModificado) {
+                        escpos.writeLF(normalCocinaStyle, " ");
                     }
 
+                    for (String linea : lineasProducto) {
+                        escpos.writeLF(estiloAUsar, linea);
+                    }
                 }
             }
             escpos.writeLF("------------------------------------------------");
@@ -164,11 +198,13 @@ public class networkPrinterService {
         if (data.get("mesa") != null)
             escpos.writeLF(boldCenterBig, "Mesa: " + data.get("mesa"));
         if (data.get("nombreDomicilio") != null && !data.get("nombreDomicilio").toString().isBlank()) {
-            escpos.writeLF(boldCenter, "Teléfono: "+  data.get("numeroCliente"));
+            if (data.get("numeroCliente")!=null) {
+                escpos.writeLF(boldCenter, "Teléfono: " + data.get("numeroCliente"));
+            }
             escpos.write("");
             escpos.writeLF(boldCenterBig, "Domicilio: " + data.get("nombreDomicilio"));
         }
-        
+
         escpos.writeLF("------------------------------------------------");
     }
 

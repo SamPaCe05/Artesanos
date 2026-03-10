@@ -2,9 +2,12 @@ package com.artesanos.sistema_pedidos.services;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Objects;
+import java.util.Iterator;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +59,8 @@ public class PedidoServiceImpl implements PedidoService {
         List<DetallePedido> detallePedidos = new ArrayList<>();
 
         Integer total = 0;
-
+        LocalDateTime fechaActual = LocalDateTime.now(ZoneId.of("America/Bogota"))
+                .truncatedTo(ChronoUnit.MINUTES);
         for (ProductoDetalleDto i : pedidoDto.getProductos()) {
 
             DetallePedido detallePedido = new DetallePedido();
@@ -70,7 +74,7 @@ public class PedidoServiceImpl implements PedidoService {
             detallePedido.setPrecioMomento(prodOptional.getPrecio());
             detallePedido.setSubtotalPedido(subtotal);
             detallePedido.setPeticionCliente(i.getPeticionCliente());
-
+            detallePedido.setFechaModificacion(fechaActual);
             total += subtotal;
 
             detallePedidos.add(detallePedido);
@@ -106,51 +110,92 @@ public class PedidoServiceImpl implements PedidoService {
     @Transactional
     @SuppressWarnings("null")
     @Override
-    public Optional<Pedido> actualizarPedido(Integer id, PedidoBodyDto pedidoBodyDto) {
-        return pedidoRepository.findById(id).map(pedido -> {
 
-            if (pedidoBodyDto.getNumeroMesa() != null) {
-                pedido.setNumeroMesa(pedidoBodyDto.getNumeroMesa());
-            }
-            if (pedidoBodyDto.getNombreDomicilio() != null) {
-                pedido.setNombreDomicilio(pedidoBodyDto.getNombreDomicilio());
-                pedido.setNumeroCliente(pedidoBodyDto.getNumeroCliente());
-            }
+public Optional<Pedido> actualizarPedido(Integer id, PedidoBodyDto pedidoBodyDto) {
+    return pedidoRepository.findById(id).map(pedido -> {
 
-            if (pedidoBodyDto.getProductos() == null) {
-                return pedidoRepository.save(pedido);
-            }
+        if (pedidoBodyDto.getNumeroMesa() != null) {
+            pedido.setNumeroMesa(pedidoBodyDto.getNumeroMesa());
+        }
+        if (pedidoBodyDto.getNombreDomicilio() != null) {
+            pedido.setNombreDomicilio(pedidoBodyDto.getNombreDomicilio());
+            pedido.setNumeroCliente(pedidoBodyDto.getNumeroCliente());
+        }
 
-            pedido.getDetallesPedido().clear();
-            int totalAcumulado = 0;
-
-            for (ProductoDetalleDto i : pedidoBodyDto.getProductos()) {
-                DetallePedido detallePedido = new DetallePedido();
-
-                Producto prod = productoRepository.findByNombreProducto(i.getNombreProducto())
-                        .orElseThrow(
-                                () -> new EntityNotFoundException("Producto no encontrado: " + i.getNombreProducto()));
-
-                int subtotal = i.getCantidadProducto() * prod.getPrecio();
-
-                detallePedido.setPedido(pedido);
-                detallePedido.setProducto(prod);
-                detallePedido.setCantidadProducto(i.getCantidadProducto());
-                detallePedido.setPrecioMomento(prod.getPrecio());
-                detallePedido.setSubtotalPedido(subtotal);
-                detallePedido.setPeticionCliente(i.getPeticionCliente());
-                totalAcumulado += subtotal;
-                pedido.getDetallesPedido().add(detallePedido);
-            }
-
-            pedido.setTotalPedido(totalAcumulado);
+        if (pedidoBodyDto.getProductos() == null) {
             return pedidoRepository.save(pedido);
-        });
-    }
+        }
 
+        LocalDateTime fechaActual = LocalDateTime.now(ZoneId.of("America/Bogota"))
+                                                 .truncatedTo(ChronoUnit.MINUTES);
+
+        List<ProductoDetalleDto> dtosEntrantes = new ArrayList<>(pedidoBodyDto.getProductos());
+        
+        int totalAcumulado = 0;
+
+        Iterator<DetallePedido> iterator = pedido.getDetallesPedido().iterator();
+        
+        while (iterator.hasNext()) {
+            DetallePedido detalleExistente = iterator.next();
+            String nombreProductoExistente = detalleExistente.getProducto().getNombreProducto();
+
+            Optional<ProductoDetalleDto> dtoMatch = dtosEntrantes.stream()
+                    .filter(dto -> dto.getNombreProducto().equals(nombreProductoExistente))
+                    .findFirst();
+
+            if (dtoMatch.isPresent()) {
+                ProductoDetalleDto dto = dtoMatch.get();
+                
+                boolean cambioCantidad = !detalleExistente.getCantidadProducto().equals(dto.getCantidadProducto());
+                boolean cambioPeticion = !Objects.equals(detalleExistente.getPeticionCliente(), dto.getPeticionCliente());
+
+                int nuevoSubtotal = dto.getCantidadProducto() * detalleExistente.getProducto().getPrecio();
+
+                if (cambioCantidad || cambioPeticion) {
+                    detalleExistente.setCantidadProducto(dto.getCantidadProducto());
+                    detalleExistente.setPeticionCliente(dto.getPeticionCliente());
+                    detalleExistente.setSubtotalPedido(nuevoSubtotal);
+                    detalleExistente.setFechaModificacion(fechaActual); 
+                }
+
+                totalAcumulado += nuevoSubtotal;
+                dtosEntrantes.remove(dto); 
+
+            } else {
+                iterator.remove(); 
+            }
+        }
+
+        for (ProductoDetalleDto dtoNuevo : dtosEntrantes) {
+            Producto prod = productoRepository.findByNombreProducto(dtoNuevo.getNombreProducto())
+                    .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado: " + dtoNuevo.getNombreProducto()));
+
+            int subtotal = dtoNuevo.getCantidadProducto() * prod.getPrecio();
+
+            DetallePedido nuevoDetalle = new DetallePedido();
+            nuevoDetalle.setPedido(pedido);
+            nuevoDetalle.setProducto(prod);
+            nuevoDetalle.setCantidadProducto(dtoNuevo.getCantidadProducto());
+            nuevoDetalle.setPrecioMomento(prod.getPrecio());
+            nuevoDetalle.setSubtotalPedido(subtotal);
+            nuevoDetalle.setPeticionCliente(dtoNuevo.getPeticionCliente());
+            nuevoDetalle.setFechaModificacion(fechaActual); 
+
+            totalAcumulado += subtotal;
+            pedido.getDetallesPedido().add(nuevoDetalle);
+        }
+
+        pedido.setTotalPedido(totalAcumulado);
+        return pedidoRepository.save(pedido);
+    });
+}
     @Override
     public List<PedidoDto> findByFechaPedidoBetweenAndEstadoPedido(LocalDateTime inicio, LocalDateTime fin) {
         return pedidoRepository.findByFechaPedidoBetweenAndEstadoPedido(inicio, fin, EstadoPedido.RESUELTO);
     }
 
+    @Override
+    public List<PedidoDto> findEstadoPedidoResuelto() {
+        return pedidoRepository.findEstadoPedidoResuelto(EstadoPedido.RESUELTO);
+    }
 }

@@ -16,7 +16,8 @@ public interface DetallePedidoRepository extends JpaRepository<DetallePedido, In
             dt.cantidadProducto,
             dt.precioMomento, 
             dt.subtotalPedido,
-            dt.peticionCliente
+            dt.peticionCliente ,
+            dt.fechaModificacion
             )
             from DetallePedido dt
             where dt.pedido.id=?1

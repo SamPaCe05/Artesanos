@@ -138,9 +138,22 @@ public class PedidoController {
 
         LocalDateTime fechaInicio = inicio.atStartOfDay(); // 2026-02-13 00:00:00
         LocalDateTime fechaFin = fin.atTime(LocalTime.MAX); // 2026-02-13 23:59:59.99999
-        System.out.println(fechaFin);
-        System.out.println(fechaInicio);
         List<PedidoDto> pedidos = pedidoService.findByFechaPedidoBetweenAndEstadoPedido(fechaInicio, fechaFin);
+        if (pedidos.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pedidos);
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "No existen pedidos para esas fechas", content = @Content),
+            @ApiResponse(responseCode = "200", description = "Pedidos Cancelados obtenidos")
+    })
+    @Operation(summary = "Buscar los pedidos Pagados")
+    @GetMapping("/resueltos")
+    @PreAuthorize("hasAuthority('ROLE_CAJA')")
+    public ResponseEntity<List<PedidoDto>> getPedidosResueltos() {
+        List<PedidoDto> pedidos = pedidoService.findEstadoPedidoResuelto();
         if (pedidos.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
