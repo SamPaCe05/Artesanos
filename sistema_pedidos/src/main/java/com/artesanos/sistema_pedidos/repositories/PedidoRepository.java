@@ -56,4 +56,16 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
                             ) from Pedido p where p.estadoPedido = ?1
                         """)
     public List<PedidoDto> findEstadoPedidoResuelto(EstadoPedido estadoPedido);
+
+    @Query("""
+            select new com.artesanos.sistema_pedidos.dtos.PedidoDto(
+                                p.id,
+                                p.totalPedido,
+                                p.numeroMesa,
+                                p.nombreDomicilio,
+                                p.estadoPago,
+                                p.numeroCliente
+                            ) from Pedido p where p.estadoPedido = ?1
+                        """)
+    public List<PedidoDto> findEstadoPedidoAnulado(EstadoPedido estadoPedido);
 }

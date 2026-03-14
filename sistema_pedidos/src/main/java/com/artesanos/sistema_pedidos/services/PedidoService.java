@@ -20,4 +20,6 @@ public interface PedidoService {
     public List<PedidoDto> findByFechaPedidoBetweenAndEstadoPedido(LocalDateTime inicio, LocalDateTime fin);
 
     public List<PedidoDto> findEstadoPedidoResuelto();
+    
+    public List<PedidoDto> findEstadoPedidoAnulado();
 }

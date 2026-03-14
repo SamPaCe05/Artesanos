@@ -438,12 +438,12 @@ const TomarPedido = () => {
 
                         {id != undefined ? (
                             <>
-                                <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido == 0 } onClick={subirPedido}>Confirmar pedido</button>
+                                <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido == 0 || mesaPedido == undefined || mesaPediod == null} onClick={subirPedido}>Confirmar pedido</button>
                                 <button className='button-anular-pedido' onClick={cancelarPedido}>Anular pedido</button>
                             </>
 
                         ) : (
-                            <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido == 0} onClick={subirPedido}>Confirmar pedido</button>
+                            <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido == 0 || mesaPedido == undefined || mesaPedido == null} onClick={subirPedido}>Confirmar pedido</button>
                         )
 
                         }

@@ -146,13 +146,27 @@ public class PedidoController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "404", description = "No existen pedidos para esas fechas", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No hay pedidos pagados", content = @Content),
             @ApiResponse(responseCode = "200", description = "Pedidos Cancelados obtenidos")
     })
     @Operation(summary = "Buscar los pedidos Pagados")
     @GetMapping("/resueltos")
     @PreAuthorize("hasAuthority('ROLE_CAJA')")
     public ResponseEntity<List<PedidoDto>> getPedidosResueltos() {
+        List<PedidoDto> pedidos = pedidoService.findEstadoPedidoResuelto();
+        if (pedidos.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pedidos);
+    }
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "No existen pedidos para esas fechas", content = @Content),
+            @ApiResponse(responseCode = "200", description = "Pedidos Cancelados obtenidos")
+    })
+    @Operation(summary = "Buscar los pedidos Pagados")
+    @GetMapping("/anulados")
+    @PreAuthorize("hasAuthority('ROLE_CAJA')")
+    public ResponseEntity<List<PedidoDto>> getPedidosAnulados() {
         List<PedidoDto> pedidos = pedidoService.findEstadoPedidoResuelto();
         if (pedidos.isEmpty()) {
             return ResponseEntity.notFound().build();

@@ -198,4 +198,8 @@ public Optional<Pedido> actualizarPedido(Integer id, PedidoBodyDto pedidoBodyDto
     public List<PedidoDto> findEstadoPedidoResuelto() {
         return pedidoRepository.findEstadoPedidoResuelto(EstadoPedido.RESUELTO);
     }
+    @Override
+    public List<PedidoDto> findEstadoPedidoAnulado() {
+        return pedidoRepository.findEstadoPedidoResuelto(EstadoPedido.CANCELADO);
+    }
 }
