@@ -268,7 +268,13 @@ const TomarPedido = () => {
 
     const cambiarDomi = (e) => {
         const nameDomi = e.target.value;
+        if (nameDomi === '.') {
+            toast.error("Caracter inválido! Cambie el nombre del cliente ", { toastId: "error-nombre" });
+            return
+        }
         setNombreDomicilio(nameDomi);
+
+
     }
     const cambiarCel = (e) => {
         const val = e.target.value;
@@ -432,7 +438,7 @@ const TomarPedido = () => {
 
                         {id != undefined ? (
                             <>
-                                <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido == 0} onClick={subirPedido}>Confirmar pedido</button>
+                                <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido == 0 } onClick={subirPedido}>Confirmar pedido</button>
                                 <button className='button-anular-pedido' onClick={cancelarPedido}>Anular pedido</button>
                             </>
 
