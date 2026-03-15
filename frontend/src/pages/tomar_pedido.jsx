@@ -43,6 +43,24 @@ const TomarPedido = () => {
 
     }, [id])
 
+    const listarPedidos = async () => {
+        return apiRequest('/api/pedidos/listar', {
+            metodo: 'GET'
+        })
+    }
+
+    useEffect(() => {
+        const funTmp = async () => {
+            if (id != undefined && domi != undefined) {
+                const pedis = await listarPedidos()
+                const pedi = pedis.find(p => p.id === Number(id))
+                const result = pedi != null ? pedi.numeroCliente : null
+                setCelCliente(result)
+            }
+        }
+        funTmp()
+    }, [])
+
 
     const actDigitado = (e) => {
         setDigitado(e.target.value)
@@ -270,7 +288,7 @@ const TomarPedido = () => {
         const nameDomi = e.target.value;
         if (nameDomi === '.') {
             toast.error("Caracter inválido! Cambie el nombre del cliente ", { toastId: "error-nombre" });
-            
+
         }
         setNombreDomicilio(nameDomi);
 
@@ -374,7 +392,7 @@ const TomarPedido = () => {
                                         </div>
                                         <div>
                                             <label htmlFor="" className='label-cel'>Cel cliente</label>
-                                            <input type="text" className='cel-cliente' placeholder='Cel' onChange={cambiarCel} />
+                                            <input type="text" className='cel-cliente' placeholder='Cel' onChange={cambiarCel} value={celCliente}/>
                                         </div>
 
 
@@ -437,28 +455,28 @@ const TomarPedido = () => {
                     <div className='div-confirmar-pedido'>
 
                         {id != undefined ? (
-                            mesaPedido!=undefined?
-                            (
-<>
-                                <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido == 0 || mesaPedido == undefined || mesaPedido == null} onClick={subirPedido}>Confirmar pedido</button>
-                                <button className='button-anular-pedido' onClick={cancelarPedido}>Anular pedido</button>
-                            </>
-                            ):(
-                                <>
-                                <button className='button-confirmar-pedido' disabled={pedido.length === 0 || nombreDomicilio == '' ||nombreDomicilio=='.'} onClick={subirPedido}>Confirmar pedido</button>
-                                <button className='button-anular-pedido' onClick={cancelarPedido}>Anular pedido</button>
-                            </>
-                            )
-                            
+                            mesaPedido != undefined ?
+                                (
+                                    <>
+                                        <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido == 0 || mesaPedido == undefined || mesaPedido == null} onClick={subirPedido}>Confirmar pedido</button>
+                                        <button className='button-anular-pedido' onClick={cancelarPedido}>Anular pedido</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button className='button-confirmar-pedido' disabled={pedido.length === 0 || nombreDomicilio == '' || nombreDomicilio == '.'} onClick={subirPedido}>Confirmar pedido</button>
+                                        <button className='button-anular-pedido' onClick={cancelarPedido}>Anular pedido</button>
+                                    </>
+                                )
+
 
                         ) : (
-                            domi!=undefined?
-                            (
-                                <button className='button-confirmar-pedido' disabled={pedido.length === 0 || nombreDomicilio=='' || nombreDomicilio=='.'} onClick={subirPedido}>Confirmar pedido</button>
-                            ):(
-                                <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido == 0 || mesaPedido == undefined || mesaPedido == null} onClick={subirPedido}>Confirmar pedido</button>
-                            )
-                            
+                            domi != undefined ?
+                                (
+                                    <button className='button-confirmar-pedido' disabled={pedido.length === 0 || nombreDomicilio == '' || nombreDomicilio == '.'} onClick={subirPedido}>Confirmar pedido</button>
+                                ) : (
+                                    <button className='button-confirmar-pedido' disabled={pedido.length === 0 || mesaPedido == 0 || mesaPedido == undefined || mesaPedido == null} onClick={subirPedido}>Confirmar pedido</button>
+                                )
+
                         )
 
                         }
